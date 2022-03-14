@@ -110,6 +110,18 @@ data:
         valueQuantity: 117 mm[Hg]
       - code: LOINC#8462-4 Diastolic blood pressure
         valueQuantity: 75 mm[Hg]
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#8302-2 height'
+    effectiveDateTime: '2022-03-13'
+    valueQuantity: 59.75 in
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#3141-9 weight'
+    effectiveDateTime: '2022-03-13'
+    valueQuantity: 59.75 in
 results:
   Notification: null
   Recommendation: null
