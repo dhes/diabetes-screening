@@ -16,6 +16,10 @@
          "def" : [ {
             "localIdentifier" : "System",
             "uri" : "urn:hl7-org:elm-types:r1"
+         }, {
+            "localIdentifier" : "FHIR",
+            "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1"
          } ]
       }
    }
