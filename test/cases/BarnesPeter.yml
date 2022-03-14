@@ -1,0 +1,116 @@
+# If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
+name: BarnesPeter
+data:
+  - resourceType: Patient
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: 2106-3
+              display: White
+          - url: text
+            valueString: White
+    active: true
+    name: Peter Barnes
+    gender: male
+    birthDate: 1953-06-05
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#laboratory Laboratory'
+    code: 'LOINC#2085-9 Cholesterol in HDL [Mass/volume] in Serum or Plasma'
+    effectiveDateTime: 2017-11-20
+    valueQuantity: 62 mg/dL
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#social-history Social History'
+    code: 'LOINC#79423-0 Cardiovascular disease 10Y risk [Likelihood] ACC-AHA Pooled Cohort by Goff 2013'
+    effectiveDateTime: 2022-02-21
+    valueQuantity: 11.66 %
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#survey survey'
+    code: 'LOINC#72166-2 Tobacco smoking status'
+    valueCodeableConcept: 'SNOMEDCT#266919005 Never smoked tobacco (finding)'
+    effectiveDateTime: 2022-02-16
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#laboratory Laboratory'
+    code: 'LOINC#2093-3 Cholesterol [Mass/volume] in Serum or Plasma'
+    effectiveDateTime: 2017-11-20
+    valueQuantity: 183 mg/dL
+  - resourceType: Observation
+    status: final
+    code: 'LOINC#85354-9 Blood pressure panel with all children optional'
+    effectiveDateTime: 2019-05-22
+    component:
+      - code:
+          coding:
+            - system: http://loinc.org
+              code: 8480-6
+              display: Systolic blood pressure
+          text: Systolic blood pressure
+        valueQuantity:
+          value: 117
+          unit: mmHg
+          system: http://unitsofmeasure.org
+          code: mm[Hg]
+      - code:
+          coding:
+            - system: http://loinc.org
+              code: 8462-4
+              display: Diastolic blood pressure
+          text: Diastolic blood pressure
+        valueQuantity:
+          value: 75
+          unit: mmHg
+          system: http://unitsofmeasure.org
+          code: mm[Hg]
+  - resourceType: Procedure
+    code: 'SNOMEDCT#73761001 Colonoscopy (procedure)'
+    status: completed
+    performedDateTime: 2021-10-04
+  - resourceType: Procedure
+    code: 'SNOMEDCT#73761001 Colonoscopy (procedure)'
+    status: completed
+    performedDateTime: 2020-07-24
+  - resourceType: Procedure
+    code: 'SNOMEDCT#73761001 Colonoscopy (procedure)'
+    status: completed
+    performedDateTime: 2019-07-22
+  - resourceType: Procedure
+    code: 'SNOMEDCT#73761001 Colonoscopy (procedure)'
+    status: completed
+    performedDateTime: 2011-07-12
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#laboratory Laboratory'
+    code: 'LOINC#13457-7 Cholesterol in LDL Calc [Mass/Vol]'
+    valueQuantity: 113 mg/dL
+    # done at Castle Hospital see https://www.myadventisthealthportal.org/
+    effectiveDateTime: 2013-01-04
+  - resourceType: MedicationStatement
+    status: active
+    # first Rx date per Elation
+    effectiveDateTime: 2018-08-21
+    code: 'RXNORM#859751 rosuvastatin calcium 20 MG Oral Tablet'
+  - resourceType: MedicationRequest
+    status: active
+    # most recent refill request
+    authoredOn: 2022-02-15
+    code: 'RXNORM#859751 rosuvastatin calcium 20 MG Oral Tablet'
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#85354-9 Blood pressure panel with all children optional'
+    effectiveDateTime: '2019-05-22'
+    component:
+      - code: 'LOINC#8480-6 Systolic blood pressure'
+        valueQuantity: 117 mm[Hg]
+      - code: LOINC#8462-4 Diastolic blood pressure
+        valueQuantity: 75 mm[Hg]
+results:
+  Notification: null
+  Recommendation: null
+  Information: null

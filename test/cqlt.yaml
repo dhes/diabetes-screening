@@ -1,6 +1,6 @@
 ---
 library:
-  name: USPSTF_Statin_Use_for_Primary_Prevention_of_CVD_in_Adults_FHIRv401
+  name: USPSTF_Diabetes_Screening_FHIRv401
   paths: ../cql
 hook:
   id: statin-use
