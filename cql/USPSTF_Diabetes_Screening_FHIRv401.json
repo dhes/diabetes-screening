@@ -27,6 +27,10 @@
             "localIdentifier" : "FHIRHelpers",
             "path" : "FHIRHelpers",
             "version" : "4.0.1"
+         }, {
+            "localIdentifier" : "C3F",
+            "path" : "CDS_Connect_Commons_for_FHIRv401",
+            "version" : "1.0.0"
          } ]
       },
       "codeSystems" : {
@@ -49,7 +53,7 @@
       },
       "codes" : {
          "def" : [ {
-            "name" : "BodyHeight",
+            "name" : "BodyHeightCode",
             "id" : "50373000",
             "display" : "Body height measure",
             "accessLevel" : "Public",
@@ -57,7 +61,7 @@
                "name" : "SNOMED-CT"
             }
          }, {
-            "name" : "BodyWeight",
+            "name" : "BodyWeightCode",
             "id" : "3141-9",
             "display" : "Body weight",
             "accessLevel" : "Public",
@@ -65,7 +69,7 @@
                "name" : "LOINC"
             }
          }, {
-            "name" : "BMI",
+            "name" : "BmiCode",
             "id" : "39156-5",
             "display" : "BMI",
             "accessLevel" : "Public",
@@ -92,7 +96,7 @@
                }
             }
          }, {
-            "name" : "HeightObservations",
+            "name" : "Heights",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -104,13 +108,13 @@
                "codes" : {
                   "type" : "ToList",
                   "operand" : {
-                     "name" : "BodyHeight",
+                     "name" : "BodyHeightCode",
                      "type" : "CodeRef"
                   }
                }
             }
          }, {
-            "name" : "WeightObservations",
+            "name" : "Weights",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -122,7 +126,7 @@
                "codes" : {
                   "type" : "ToList",
                   "operand" : {
-                     "name" : "BodyWeight",
+                     "name" : "BodyWeightCode",
                      "type" : "CodeRef"
                   }
                }
@@ -140,7 +144,7 @@
                "codes" : {
                   "type" : "ToList",
                   "operand" : {
-                     "name" : "BMI",
+                     "name" : "BmiCode",
                      "type" : "CodeRef"
                   }
                }
@@ -154,7 +158,7 @@
                "source" : [ {
                   "alias" : "H",
                   "expression" : {
-                     "name" : "HeightObservations",
+                     "name" : "Heights",
                      "type" : "ExpressionRef"
                   }
                } ],
@@ -184,7 +188,7 @@
                "source" : [ {
                   "alias" : "H",
                   "expression" : {
-                     "name" : "HeightObservations",
+                     "name" : "Heights",
                      "type" : "ExpressionRef"
                   }
                } ],
@@ -204,6 +208,268 @@
                      }
                   }
                }
+            }
+         }, {
+            "name" : "MostRecentHeight",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Heights",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
+            "name" : "HeightUnit",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "path" : "value",
+               "type" : "Property",
+               "source" : {
+                  "path" : "unit",
+                  "type" : "Property",
+                  "source" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "MostRecentHeight",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "HeightValue",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "path" : "value",
+               "type" : "Property",
+               "source" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "MostRecentHeight",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "MostRecentWeight",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Weights",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
+            "name" : "WeightUnit",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "path" : "value",
+               "type" : "Property",
+               "source" : {
+                  "path" : "unit",
+                  "type" : "Property",
+                  "source" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "MostRecentWeight",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "WeightValue",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "path" : "value",
+               "type" : "Property",
+               "source" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "MostRecentWeight",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "HeightInMeters",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Case",
+               "comparand" : {
+                  "name" : "HeightUnit",
+                  "type" : "ExpressionRef"
+               },
+               "caseItem" : [ {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "cm",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "type" : "Divide",
+                     "operand" : [ {
+                        "name" : "HeightValue",
+                        "type" : "ExpressionRef"
+                     }, {
+                        "type" : "ToDecimal",
+                        "operand" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "100",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  }
+               }, {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "[in_i]",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "type" : "Divide",
+                     "operand" : [ {
+                        "type" : "Multiply",
+                        "operand" : [ {
+                           "name" : "HeightValue",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                           "value" : "2.54",
+                           "type" : "Literal"
+                        } ]
+                     }, {
+                        "type" : "ToDecimal",
+                        "operand" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "100",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
+            }
+         }, {
+            "name" : "WeightInKilos",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Case",
+               "comparand" : {
+                  "name" : "WeightUnit",
+                  "type" : "ExpressionRef"
+               },
+               "caseItem" : [ {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "[lb_av]",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "type" : "Multiply",
+                     "operand" : [ {
+                        "name" : "WeightValue",
+                        "type" : "ExpressionRef"
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                        "value" : "0.4535924",
+                        "type" : "Literal"
+                     } ]
+                  }
+               }, {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "kg",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "name" : "WeightValue",
+                     "type" : "ExpressionRef"
+                  }
+               }, {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "gm",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "type" : "Divide",
+                     "operand" : [ {
+                        "name" : "WeightValue",
+                        "type" : "ExpressionRef"
+                     }, {
+                        "type" : "ToDecimal",
+                        "operand" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1000",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
+            }
+         }, {
+            "name" : "BMI",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Divide",
+               "operand" : [ {
+                  "name" : "WeightInKilos",
+                  "type" : "ExpressionRef"
+               }, {
+                  "type" : "Power",
+                  "operand" : [ {
+                     "name" : "HeightInMeters",
+                     "type" : "ExpressionRef"
+                  }, {
+                     "type" : "ToDecimal",
+                     "operand" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "2",
+                        "type" : "Literal"
+                     }
+                  } ]
+               } ]
             }
          } ]
       }

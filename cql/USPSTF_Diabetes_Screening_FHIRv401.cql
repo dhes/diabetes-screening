@@ -2,7 +2,7 @@ library USPSTF_Diabetes_Screening_FHIRv401 version '0.0.1'
 using FHIR version '4.0.1'
 include FHIRHelpers version '4.0.1' called FHIRHelpers
 // include CDS_Connect_Conversions version '1.0.2' called Convert
-// include CDS_Connect_Commons_for_FHIRv401 version '1.0.0' called C3F
+include CDS_Connect_Commons_for_FHIRv401 version '1.0.0' called C3F
 
 codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED-CT": 'http://snomed.info/sct'
@@ -12,27 +12,66 @@ valueset "Diabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.
 
 // height should be in inches
 // code BodyHeight: '8302-0' from "LOINC" display 'Body height'
-code BodyHeight: '50373000' from "SNOMED-CT" display 'Body height measure'
+code BodyHeightCode: '50373000' from "SNOMED-CT" display 'Body height measure'
 // weight should be in pounds
-code BodyWeight: '3141-9' from "LOINC" display 'Body weight'
+code BodyWeightCode: '3141-9' from "LOINC" display 'Body weight'
 // BMI can be calculated or entered manually
-code BMI: '39156-5' from "LOINC" display 'BMI'
+code BmiCode: '39156-5' from "LOINC" display 'BMI'
 
 context Patient
 
-define HeightObservations:
-  [Observation: BodyHeight]
+define Heights:
+  [Observation: BodyHeightCode]
 
-define WeightObservations:
-  [Observation: BodyWeight]
+define Weights:
+  [Observation: BodyWeightCode]
 
 define BmiObservations:
-  [Observation: BMI]
+  [Observation: BmiCode]
 
 define HeightValues:
-  HeightObservations H
+  Heights H
     return H.value.value.value
 
 define HeightUnits:
-  HeightObservations H
+  Heights H
     return H.value.unit.value
+
+define MostRecentHeight:
+  C3F.MostRecent(Heights)
+
+define HeightUnit:
+  MostRecentHeight.value.unit.value
+
+define HeightValue:
+  MostRecentHeight.value.value.value
+
+define MostRecentWeight:
+  C3F.MostRecent(Weights)
+
+define WeightUnit:
+  MostRecentWeight.value.unit.value
+
+define WeightValue:
+  MostRecentWeight.value.value.value
+
+define HeightInMeters:
+  // the only allowed units are [in_i] or cm
+  case HeightUnit
+    when 'cm' then HeightValue/100
+    when '[in_i]' then (HeightValue * 2.54)/100
+    else null
+  end
+
+define WeightInKilos:
+   // the only allowed values are [lb_av], kg and g
+   // for all you physics majors out there, technically kg is MASS and kilo is WEIGHT ;)
+  case WeightUnit
+    when '[lb_av]' then WeightValue*0.4535924
+    when 'kg' then WeightValue
+    when 'gm' then WeightValue/1000
+    else null
+  end
+
+define BMI:
+  WeightInKilos/(HeightInMeters^2)
