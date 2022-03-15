@@ -191,19 +191,15 @@
                "relationship" : [ ],
                "return" : {
                   "expression" : {
-                     "path" : "unit",
+                     "path" : "value",
                      "type" : "Property",
                      "source" : {
-                        "strict" : false,
-                        "type" : "As",
-                        "operand" : {
+                        "path" : "unit",
+                        "type" : "Property",
+                        "source" : {
                            "path" : "value",
                            "scope" : "H",
                            "type" : "Property"
-                        },
-                        "asTypeSpecifier" : {
-                           "name" : "{http://hl7.org/fhir}Quantity",
-                           "type" : "NamedTypeSpecifier"
                         }
                      }
                   }
