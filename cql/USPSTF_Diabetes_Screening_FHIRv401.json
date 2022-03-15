@@ -92,7 +92,7 @@
                }
             }
          }, {
-            "name" : "HeightObservation",
+            "name" : "HeightObservations",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -110,7 +110,7 @@
                }
             }
          }, {
-            "name" : "WeightObservation",
+            "name" : "WeightObservations",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -128,7 +128,7 @@
                }
             }
          }, {
-            "name" : "BmiObservation",
+            "name" : "BmiObservations",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -146,47 +146,67 @@
                }
             }
          }, {
-            "name" : "AllObservations",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "dataType" : "{http://hl7.org/fhir}Observation",
-               "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
-               "type" : "Retrieve"
-            }
-         }, {
-            "name" : "HeightQuery",
+            "name" : "HeightValues",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
                "type" : "Query",
                "source" : [ {
-                  "alias" : "O",
+                  "alias" : "H",
                   "expression" : {
-                     "dataType" : "{http://hl7.org/fhir}Observation",
-                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
-                     "type" : "Retrieve"
+                     "name" : "HeightObservations",
+                     "type" : "ExpressionRef"
                   }
                } ],
                "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "name" : "ToConcept",
-                     "libraryName" : "FHIRHelpers",
-                     "type" : "FunctionRef",
-                     "operand" : [ {
-                        "path" : "code",
-                        "scope" : "O",
-                        "type" : "Property"
-                     } ]
-                  }, {
-                     "type" : "ToConcept",
-                     "operand" : {
-                        "name" : "BodyHeight",
-                        "type" : "CodeRef"
+               "return" : {
+                  "expression" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "value",
+                           "scope" : "H",
+                           "type" : "Property"
+                        }
                      }
-                  } ]
+                  }
+               }
+            }
+         }, {
+            "name" : "HeightUnits",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "H",
+                  "expression" : {
+                     "name" : "HeightObservations",
+                     "type" : "ExpressionRef"
+                  }
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "path" : "unit",
+                     "type" : "Property",
+                     "source" : {
+                        "strict" : false,
+                        "type" : "As",
+                        "operand" : {
+                           "path" : "value",
+                           "scope" : "H",
+                           "type" : "Property"
+                        },
+                        "asTypeSpecifier" : {
+                           "name" : "{http://hl7.org/fhir}Quantity",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }
+                  }
                }
             }
          } ]

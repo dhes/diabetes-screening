@@ -20,18 +20,19 @@ code BMI: '39156-5' from "LOINC" display 'BMI'
 
 context Patient
 
-define HeightObservation:
+define HeightObservations:
   [Observation: BodyHeight]
 
-define WeightObservation:
+define WeightObservations:
   [Observation: BodyWeight]
 
-define BmiObservation:
+define BmiObservations:
   [Observation: BMI]
 
-define AllObservations:
-  [Observation]
+define HeightValues:
+  HeightObservations H
+    return H.value.value.value
 
-define HeightQuery: 
-  [Observation] O
-    where O.code = BodyHeight
+define HeightUnits:
+  HeightObservations H
+    return H.value.unit.value
