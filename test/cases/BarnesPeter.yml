@@ -115,7 +115,7 @@ data:
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
-    code: 'LOINC#3141-9 weight'
+    code: 'LOINC#3141-9 Body weight'
     effectiveDateTime: '2022-03-13'
     valueQuantity: 160 [lb_av]
   - resourceType: Observation
