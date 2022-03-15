@@ -34,6 +34,10 @@
             "name" : "LOINC",
             "id" : "http://loinc.org",
             "accessLevel" : "Public"
+         }, {
+            "name" : "SNOMED-CT",
+            "id" : "http://snomed.info/sct",
+            "accessLevel" : "Public"
          } ]
       },
       "valueSets" : {
@@ -46,11 +50,11 @@
       "codes" : {
          "def" : [ {
             "name" : "BodyHeight",
-            "id" : "8302-0",
-            "display" : "Body height",
+            "id" : "50373000",
+            "display" : "Body height measure",
             "accessLevel" : "Public",
             "codeSystem" : {
-               "name" : "LOINC"
+               "name" : "SNOMED-CT"
             }
          }, {
             "name" : "BodyWeight",

@@ -121,7 +121,8 @@ data:
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
-    code: 'LOINC#8302-2 Body height'
+    # code: 'LOINC#8302-2 Body height'
+    code: 'SNOMEDCT#50373000 Body height measure'
     effectiveDateTime: '2022-03-13'
     valueQuantity: 60 [in_i]
   - resourceType: Observation
