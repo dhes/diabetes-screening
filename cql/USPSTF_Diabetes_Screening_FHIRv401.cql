@@ -1,6 +1,8 @@
 library USPSTF_Diabetes_Screening_FHIRv401 version '0.0.1'
 using FHIR version '4.0.1'
 include FHIRHelpers version '4.0.1' called FHIRHelpers
+// include CDS_Connect_Conversions version '1.0.2' called Convert
+// include CDS_Connect_Commons_for_FHIRv401 version '1.0.0' called C3F
 
 codesystem "LOINC": 'http://loinc.org'
 
@@ -16,6 +18,11 @@ code "BMI": '39156-5' from "LOINC" display 'BMI'
 
 context Patient
 
-define "HeightObservation":
-  [Observation: "Height"] H
-    return H.value.value^2
+define HeightObservation:
+  [Observation: Height]
+
+define WeightObservation:
+  [Observation: Weight]
+
+define BmiObservation:
+  [Observation: BMI]

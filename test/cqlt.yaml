@@ -3,11 +3,11 @@ library:
   name: USPSTF_Diabetes_Screening_FHIRv401
   paths: ../cql
 hook:
-  id: statin-use
+  id: diabetes-screening
   pmTestGenSupport: pm-test-gen.js
 tests:
   path: cases
 options:
   dumpFiles: 
     enabled: true
-  date: "2021-12-31T00:00:00-10:00"
+#  date: "2021-12-31T00:00:00-10:00"

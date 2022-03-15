@@ -106,22 +106,30 @@ data:
     code: 'LOINC#85354-9 Blood pressure panel with all children optional'
     effectiveDateTime: '2019-05-22'
     component:
-      - code: 'LOINC#8480-6 Systolic blood pressure'
+      - 
+        code: 'LOINC#8480-6 Systolic blood pressure'
         valueQuantity: 117 mm[Hg]
-      - code: LOINC#8462-4 Diastolic blood pressure
+      - 
+        code: LOINC#8462-4 Diastolic blood pressure
         valueQuantity: 75 mm[Hg]
-  - resourceType: Observation
-    status: final
-    category: 'OBS-CAT#vital-signs Vital Signs'
-    code: 'LOINC#8302-2 height'
-    effectiveDateTime: '2022-03-13'
-    valueQuantity: 59.75 in
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
     code: 'LOINC#3141-9 weight'
     effectiveDateTime: '2022-03-13'
-    valueQuantity: 59.75 in
+    valueQuantity: 160 [lb_av]
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#8302-2 Body height'
+    effectiveDateTime: '2022-03-13'
+    valueQuantity: 60 [in_i]
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#39156-5 Body mass index'
+    effectiveDateTime: '2022-03-13'
+    valueQuantity: 25 kg/m2
 results:
   Notification: null
   Recommendation: null

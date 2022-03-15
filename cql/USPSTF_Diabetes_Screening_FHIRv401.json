@@ -3,17 +3,6 @@
       "annotation" : [ {
          "translatorOptions" : "",
          "type" : "CqlToElmInfo"
-      }, {
-         "libraryId" : "USPSTF_Diabetes_Screening_FHIRv401",
-         "libraryVersion" : "0.0.1",
-         "startLine" : 17,
-         "startChar" : 3,
-         "endLine" : 17,
-         "endChar" : 23,
-         "message" : "Could not resolve membership operator for terminology target of the retrieve.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "USPSTF_Diabetes_Screening_FHIRv401",
@@ -30,6 +19,13 @@
          }, {
             "localIdentifier" : "FHIR",
             "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1"
+         } ]
+      },
+      "includes" : {
+         "def" : [ {
+            "localIdentifier" : "FHIRHelpers",
+            "path" : "FHIRHelpers",
             "version" : "4.0.1"
          } ]
       },
@@ -74,51 +70,74 @@
             }
          } ]
       },
+      "contexts" : {
+         "def" : [ {
+            "name" : "Patient"
+         } ]
+      },
       "statements" : {
          "def" : [ {
-            "name" : "HeightObs",
+            "name" : "Patient",
+            "context" : "Patient",
+            "expression" : {
+               "type" : "SingletonFrom",
+               "operand" : {
+                  "dataType" : "{http://hl7.org/fhir}Patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
+                  "type" : "Retrieve"
+               }
+            }
+         }, {
+            "name" : "HeightObservation",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "H",
-                  "expression" : {
-                     "dataType" : "{http://hl7.org/fhir}Observation",
-                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
-                     "codeProperty" : "code",
-                     "codeComparator" : "~",
-                     "type" : "Retrieve",
-                     "codes" : {
-                        "type" : "ToList",
-                        "operand" : {
-                           "name" : "Height",
-                           "type" : "CodeRef"
-                        }
-                     }
+               "dataType" : "{http://hl7.org/fhir}Observation",
+               "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+               "codeProperty" : "code",
+               "codeComparator" : "~",
+               "type" : "Retrieve",
+               "codes" : {
+                  "type" : "ToList",
+                  "operand" : {
+                     "name" : "Height",
+                     "type" : "CodeRef"
                   }
-               } ],
-               "relationship" : [ ],
-               "return" : {
-                  "expression" : {
-                     "type" : "Power",
-                     "operand" : [ {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "type" : "As",
-                        "operand" : {
-                           "path" : "value",
-                           "type" : "Property",
-                           "source" : {
-                              "path" : "value",
-                              "scope" : "H",
-                              "type" : "Property"
-                           }
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "2",
-                        "type" : "Literal"
-                     } ]
+               }
+            }
+         }, {
+            "name" : "WeightObservation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "dataType" : "{http://hl7.org/fhir}Observation",
+               "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+               "codeProperty" : "code",
+               "codeComparator" : "~",
+               "type" : "Retrieve",
+               "codes" : {
+                  "type" : "ToList",
+                  "operand" : {
+                     "name" : "Weight",
+                     "type" : "CodeRef"
+                  }
+               }
+            }
+         }, {
+            "name" : "BmiObservation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "dataType" : "{http://hl7.org/fhir}Observation",
+               "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+               "codeProperty" : "code",
+               "codeComparator" : "~",
+               "type" : "Retrieve",
+               "codes" : {
+                  "type" : "ToList",
+                  "operand" : {
+                     "name" : "BMI",
+                     "type" : "CodeRef"
                   }
                }
             }
