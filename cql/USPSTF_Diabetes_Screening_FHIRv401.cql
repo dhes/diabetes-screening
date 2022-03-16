@@ -29,34 +29,11 @@ define Weights:
 define BmiObservations:
   [Observation: BmiCode]
 
-// define HeightValues:
-//   Heights H
-//     return H.value.value.value
-
-// define HeightUnits:
-//   Heights H
-//     return H.value.unit.value
-
 define Height:
   FHIRHelpers.ToQuantity(C3F.MostRecent(Heights).value)
 
-// define MostRecentHeightToQuantity:
-//   FHIRHelpers.ToQuantity(C3F.MostRecent(Heights).value)
-
-// define HeightUnit:
-//   MostRecentHeight.unit
-
-// define HeightValue:
-//   MostRecentHeight.value
-
 define Weight:
   FHIRHelpers.ToQuantity(C3F.MostRecent(Weights).value)
-
-// define WeightUnit:
-//   MostRecentWeight.unit
-
-// define WeightValue:
-//   MostRecentWeight.value
 
 define HeightInMeters:
   // the only allowed units are [in_i] or cm
