@@ -40,6 +40,9 @@ define HeightUnits:
 define MostRecentHeight:
   C3F.MostRecent(Heights)
 
+define MostRecentHeightToQuantity:
+  FHIRHelpers.ToQuantity(C3F.MostRecent(Heights).value)
+
 define HeightUnit:
   MostRecentHeight.value.unit.value
 

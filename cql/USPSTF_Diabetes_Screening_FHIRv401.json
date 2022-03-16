@@ -223,6 +223,32 @@
                } ]
             }
          }, {
+            "name" : "MostRecentHeightToQuantity",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "ToQuantity",
+               "libraryName" : "FHIRHelpers",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "asType" : "{http://hl7.org/fhir}Quantity",
+                  "type" : "As",
+                  "operand" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "MostRecent",
+                        "libraryName" : "C3F",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "name" : "Heights",
+                           "type" : "ExpressionRef"
+                        } ]
+                     }
+                  }
+               } ]
+            }
+         }, {
             "name" : "HeightUnit",
             "context" : "Patient",
             "accessLevel" : "Public",
