@@ -150,80 +150,7 @@
                }
             }
          }, {
-            "name" : "HeightValues",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "H",
-                  "expression" : {
-                     "name" : "Heights",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "return" : {
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "path" : "value",
-                           "scope" : "H",
-                           "type" : "Property"
-                        }
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "HeightUnits",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "H",
-                  "expression" : {
-                     "name" : "Heights",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "return" : {
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "unit",
-                        "type" : "Property",
-                        "source" : {
-                           "path" : "value",
-                           "scope" : "H",
-                           "type" : "Property"
-                        }
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "MostRecentHeight",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "name" : "MostRecent",
-               "libraryName" : "C3F",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "name" : "Heights",
-                  "type" : "ExpressionRef"
-               } ]
-            }
-         }, {
-            "name" : "MostRecentHeightToQuantity",
+            "name" : "Height",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -249,97 +176,30 @@
                } ]
             }
          }, {
-            "name" : "HeightUnit",
+            "name" : "Weight",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "path" : "value",
-               "type" : "Property",
-               "source" : {
-                  "path" : "unit",
-                  "type" : "Property",
-                  "source" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "MostRecentHeight",
-                        "type" : "ExpressionRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "HeightValue",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "path" : "value",
-               "type" : "Property",
-               "source" : {
-                  "path" : "value",
-                  "type" : "Property",
-                  "source" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "MostRecentHeight",
-                        "type" : "ExpressionRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "MostRecentWeight",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "name" : "MostRecent",
-               "libraryName" : "C3F",
+               "name" : "ToQuantity",
+               "libraryName" : "FHIRHelpers",
                "type" : "FunctionRef",
                "operand" : [ {
-                  "name" : "Weights",
-                  "type" : "ExpressionRef"
+                  "asType" : "{http://hl7.org/fhir}Quantity",
+                  "type" : "As",
+                  "operand" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "MostRecent",
+                        "libraryName" : "C3F",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "name" : "Weights",
+                           "type" : "ExpressionRef"
+                        } ]
+                     }
+                  }
                } ]
-            }
-         }, {
-            "name" : "WeightUnit",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "path" : "value",
-               "type" : "Property",
-               "source" : {
-                  "path" : "unit",
-                  "type" : "Property",
-                  "source" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "MostRecentWeight",
-                        "type" : "ExpressionRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "WeightValue",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "path" : "value",
-               "type" : "Property",
-               "source" : {
-                  "path" : "value",
-                  "type" : "Property",
-                  "source" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "MostRecentWeight",
-                        "type" : "ExpressionRef"
-                     }
-                  }
-               }
             }
          }, {
             "name" : "HeightInMeters",
@@ -348,8 +208,12 @@
             "expression" : {
                "type" : "Case",
                "comparand" : {
-                  "name" : "HeightUnit",
-                  "type" : "ExpressionRef"
+                  "path" : "unit",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "Height",
+                     "type" : "ExpressionRef"
+                  }
                },
                "caseItem" : [ {
                   "when" : {
@@ -360,8 +224,12 @@
                   "then" : {
                      "type" : "Divide",
                      "operand" : [ {
-                        "name" : "HeightValue",
-                        "type" : "ExpressionRef"
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "Height",
+                           "type" : "ExpressionRef"
+                        }
                      }, {
                         "type" : "ToDecimal",
                         "operand" : {
@@ -382,8 +250,12 @@
                      "operand" : [ {
                         "type" : "Multiply",
                         "operand" : [ {
-                           "name" : "HeightValue",
-                           "type" : "ExpressionRef"
+                           "path" : "value",
+                           "type" : "Property",
+                           "source" : {
+                              "name" : "Height",
+                              "type" : "ExpressionRef"
+                           }
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
                            "value" : "2.54",
@@ -414,8 +286,12 @@
             "expression" : {
                "type" : "Case",
                "comparand" : {
-                  "name" : "WeightUnit",
-                  "type" : "ExpressionRef"
+                  "path" : "unit",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "Weight",
+                     "type" : "ExpressionRef"
+                  }
                },
                "caseItem" : [ {
                   "when" : {
@@ -426,8 +302,12 @@
                   "then" : {
                      "type" : "Multiply",
                      "operand" : [ {
-                        "name" : "WeightValue",
-                        "type" : "ExpressionRef"
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "Weight",
+                           "type" : "ExpressionRef"
+                        }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
                         "value" : "0.4535924",
@@ -441,8 +321,12 @@
                      "type" : "Literal"
                   },
                   "then" : {
-                     "name" : "WeightValue",
-                     "type" : "ExpressionRef"
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "Weight",
+                        "type" : "ExpressionRef"
+                     }
                   }
                }, {
                   "when" : {
@@ -453,8 +337,12 @@
                   "then" : {
                      "type" : "Divide",
                      "operand" : [ {
-                        "name" : "WeightValue",
-                        "type" : "ExpressionRef"
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "Weight",
+                           "type" : "ExpressionRef"
+                        }
                      }, {
                         "type" : "ToDecimal",
                         "operand" : {
