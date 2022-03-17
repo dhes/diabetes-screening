@@ -20,6 +20,11 @@ code BmiCode: '39156-5' from "LOINC" display 'BMI'
 
 context Patient
 
+define InAgeRange: 
+  if Patient.birthDate is not null then 
+    AgeInYears() >= 35 and AgeInYears() < 71 
+  else null
+
 define Heights:
   [Observation: BodyHeightCode]
 
@@ -45,7 +50,7 @@ define HeightInMeters:
 
 define WeightInKilos:
    // the only allowed values are [lb_av], kg and g
-   // for all you physics majors out there, technically kg is MASS and kilo is WEIGHT ;)
+   // for all you physics majors out there, kg is mass and kilo is weight ;)
   case Weight.unit
     when '[lb_av]' then Weight.value*0.4535924
     when 'kg' then Weight.value
@@ -62,7 +67,13 @@ define MeetsExclusionCriteria: false
 
 define NeedMoreInformation:
   if not MeetsExclusionCriteria then
-    Combine(List{
-      if Patient.birthDate is null then '- date of birth' else null
-    }, '\n') 
+    if InAgeRange is null then
+      '- date of birth'
+    else
+      if InAgeRange is true then
+        Combine(List{
+          if Height is null then '- height' else null,
+          if Weight is null then '- weight' else null
+        }, '\n')
+      else null
   else null

@@ -132,6 +132,5 @@ data:
     effectiveDateTime: '2022-03-13'
     valueQuantity: 25 kg/m2
 results:
-  Notification: null
   Recommendation: null
-  Information: null
+  NeedMoreInformation: null

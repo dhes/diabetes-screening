@@ -1,0 +1,22 @@
+# If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
+name: too_old
+data:
+  - resourceType: Patient
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: 2106-3
+              display: White
+          - url: text
+            valueString: White
+    active: true
+    name: Ferd Berfel
+    gender: male
+    # in the middle of the age range
+    birthDate: 1950-12-31
+results:
+  NeedMoreInformation: null
+  Recommendation: null
