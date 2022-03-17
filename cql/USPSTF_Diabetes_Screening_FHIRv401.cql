@@ -29,47 +29,27 @@ define Weights:
 define BmiObservations:
   [Observation: BmiCode]
 
-define HeightValues:
-  Heights H
-    return H.value.value.value
+define Height:
+  FHIRHelpers.ToQuantity(C3F.MostRecent(Heights).value)
 
-define HeightUnits:
-  Heights H
-    return H.value.unit.value
-
-define MostRecentHeight:
-  C3F.MostRecent(Heights)
-
-define HeightUnit:
-  MostRecentHeight.value.unit.value
-
-define HeightValue:
-  MostRecentHeight.value.value.value
-
-define MostRecentWeight:
-  C3F.MostRecent(Weights)
-
-define WeightUnit:
-  MostRecentWeight.value.unit.value
-
-define WeightValue:
-  MostRecentWeight.value.value.value
+define Weight:
+  FHIRHelpers.ToQuantity(C3F.MostRecent(Weights).value)
 
 define HeightInMeters:
   // the only allowed units are [in_i] or cm
-  case HeightUnit
-    when 'cm' then HeightValue/100
-    when '[in_i]' then (HeightValue * 2.54)/100
+  case Height.unit
+    when 'cm' then Height.value/100
+    when '[in_i]' then (Height.value * 2.54)/100
     else null
   end
 
 define WeightInKilos:
    // the only allowed values are [lb_av], kg and g
    // for all you physics majors out there, technically kg is MASS and kilo is WEIGHT ;)
-  case WeightUnit
-    when '[lb_av]' then WeightValue*0.4535924
-    when 'kg' then WeightValue
-    when 'gm' then WeightValue/1000
+  case Weight.unit
+    when '[lb_av]' then Weight.value*0.4535924
+    when 'kg' then Weight.value
+    when 'gm' then Weight.value/1000
     else null
   end
 
