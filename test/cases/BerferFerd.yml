@@ -37,6 +37,5 @@ data:
     effectiveDateTime: '2022-03-13'
     valueQuantity: 160 [lb_av]
 results:
-  Notification: null
+  NeedMoreInformation: null
   Recommendation: null
-  Information: null
