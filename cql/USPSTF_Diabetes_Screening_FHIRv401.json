@@ -42,12 +42,28 @@
             "name" : "SNOMED-CT",
             "id" : "http://snomed.info/sct",
             "accessLevel" : "Public"
+         }, {
+            "name" : "ICD-10-CM",
+            "id" : "http://hl7.org/fhir/sid/icd-10-cm",
+            "accessLevel" : "Public"
          } ]
       },
       "valueSets" : {
          "def" : [ {
             "name" : "Diabetes",
             "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.103.12.1001",
+            "accessLevel" : "Public"
+         }, {
+            "name" : "Pregnancy",
+            "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.526.3.378",
+            "accessLevel" : "Public"
+         }, {
+            "name" : "Pregnancy (New ICD10 codes published in 2018 and 2019)",
+            "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.80",
+            "accessLevel" : "Public"
+         }, {
+            "name" : "Prediabetes",
+            "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419",
             "accessLevel" : "Public"
          } ]
       },
@@ -434,6 +450,13 @@
                }
             }
          }, {
+            "name" : "ScreeningNeverDone",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Null"
+            }
+         }, {
             "name" : "BMI",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -458,14 +481,28 @@
                } ]
             }
          }, {
-            "name" : "Recommendation",
+            "name" : "IsPregnant",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
                "type" : "Null"
             }
          }, {
-            "name" : "MeetsExclusionCriteria",
+            "name" : "HadDiabetes",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Null"
+            }
+         }, {
+            "name" : "HasPrediabetes",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Null"
+            }
+         }, {
+            "name" : "IsExcluded",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -485,7 +522,7 @@
                   "operand" : {
                      "type" : "Not",
                      "operand" : {
-                        "name" : "MeetsExclusionCriteria",
+                        "name" : "IsExcluded",
                         "type" : "ExpressionRef"
                      }
                   }
@@ -591,6 +628,54 @@
                         }
                      }
                   }
+               },
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
+            }
+         }, {
+            "name" : "Recommendation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "And",
+                        "operand" : [ {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "InAgeRange",
+                              "type" : "ExpressionRef"
+                           }
+                        }, {
+                           "type" : "IsNull",
+                           "operand" : {
+                              "name" : "NeedMoreInformation",
+                              "type" : "ExpressionRef"
+                           }
+                        } ]
+                     }, {
+                        "type" : "IsFalse",
+                        "operand" : {
+                           "name" : "IsExcluded",
+                           "type" : "ExpressionRef"
+                        }
+                     } ]
+                  }
+               },
+               "then" : {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                  "value" : "- order HbA1c",
+                  "type" : "Literal"
                },
                "else" : {
                   "asType" : "{urn:hl7-org:elm-types:r1}String",

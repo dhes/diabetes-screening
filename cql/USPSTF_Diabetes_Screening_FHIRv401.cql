@@ -6,16 +6,19 @@ include CDS_Connect_Commons_for_FHIRv401 version '1.0.0' called C3F
 
 codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED-CT": 'http://snomed.info/sct'
+codesystem "ICD-10-CM": 'http://hl7.org/fhir/sid/icd-10-cm'
 
-// [See value set in VSAC](https://vsac.nlm.nih.gov/valueset/2.16.840.1.113883.3.464.1003.103.12.1001/expansion)
 valueset "Diabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.103.12.1001'
+valueset "Pregnancy": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.526.3.378'
+valueset "Pregnancy (New ICD10 codes published in 2018 and 2019)": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.80'
+// This next set includes SNOMED-CT and ICD-10-CM codes for prediabetes, impaired glucose tolerance (IGT) and impaired fasting glucose (IFG)
+valueset "Prediabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419'
 
-// height should be in inches
+// for some reason the LOINC code for body height in inches produces null results. 
 // code BodyHeight: '8302-0' from "LOINC" display 'Body height'
+// using snomed code instead
 code BodyHeightCode: '50373000' from "SNOMED-CT" display 'Body height measure'
-// weight should be in pounds
 code BodyWeightCode: '3141-9' from "LOINC" display 'Body weight'
-// BMI can be calculated or entered manually
 code BmiCode: '39156-5' from "LOINC" display 'BMI'
 
 context Patient
@@ -58,15 +61,27 @@ define WeightInKilos:
     else null
   end
 
+define ScreeningNeverDone:
+  // never had HbA1c measure since turning 35
+  // or GTT or fasting glucose
+  null
+
 define BMI:
   WeightInKilos/(HeightInMeters^2)
 
-define Recommendation: null
+define IsPregnant:
+  null
 
-define MeetsExclusionCriteria: false
+define HadDiabetes:
+  null
+
+define HasPrediabetes: // which includes IGG and IFG
+  null
+
+define IsExcluded: false
 
 define NeedMoreInformation:
-  if not MeetsExclusionCriteria then
+  if not IsExcluded then
     if InAgeRange is null then
       '- date of birth'
     else
@@ -77,3 +92,12 @@ define NeedMoreInformation:
         }, '\n')
       else null
   else null
+
+define Recommendation: 
+  if InAgeRange is true and  
+    NeedMoreInformation is null and
+    //  ScreeningNeverDone is true
+    IsExcluded is false 
+    then '- order HbA1c'
+  else null
+

@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: FerdBerfel
+name: no_height
 data:
   - resourceType: Patient
     extension:
@@ -15,21 +15,8 @@ data:
     active: true
     name: Ferd Berfel
     gender: male
-    birthDate: 1953-06-05
-  - resourceType: Observation
-    status: final
-    category: 'OBS-CAT#vital-signs Vital Signs'
-    # code: 'LOINC#8302-2 Body height'
-    code: 'SNOMEDCT#50373000 Body height measure'
-    effectiveDateTime: '2021-03-13'
-    valueQuantity: 70 [in_i]
-  - resourceType: Observation
-    status: final
-    category: 'OBS-CAT#vital-signs Vital Signs'
-    # code: 'LOINC#8302-2 Body height'
-    code: 'SNOMEDCT#50373000 Body height measure'
-    effectiveDateTime: '2022-03-13'
-    valueQuantity: 178 cm
+    # in the middle of the age range
+    birthDate: 1968-06-30
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
@@ -37,5 +24,6 @@ data:
     effectiveDateTime: '2022-03-13'
     valueQuantity: 160 [lb_av]
 results:
-  NeedMoreInformation: null
-  Recommendation: '- order HbA1c'
+  NeedMoreInformation: |-
+    - height
+  Recommendation: null
