@@ -92,6 +92,22 @@
             "codeSystem" : {
                "name" : "LOINC"
             }
+         }, {
+            "name" : "Pregnancy status",
+            "id" : "82810-3",
+            "display" : "Pregnancy status",
+            "accessLevel" : "Public",
+            "codeSystem" : {
+               "name" : "LOINC"
+            }
+         }, {
+            "name" : "Pregnant",
+            "id" : "77386006",
+            "display" : "Patient currently pregnant (finding)",
+            "accessLevel" : "Public",
+            "codeSystem" : {
+               "name" : "SNOMED-CT"
+            }
          } ]
       },
       "contexts" : {
@@ -481,11 +497,102 @@
                } ]
             }
          }, {
+            "name" : "MostRecentPregnancyObservation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Verified",
+                  "libraryName" : "C3F",
+                  "type" : "FunctionRef",
+                  "operand" : [ {
+                     "name" : "ObservationLookBack",
+                     "libraryName" : "C3F",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "~",
+                        "type" : "Retrieve",
+                        "codes" : {
+                           "type" : "ToList",
+                           "operand" : {
+                              "name" : "Pregnancy status",
+                              "type" : "CodeRef"
+                           }
+                        }
+                     }, {
+                        "value" : 42,
+                        "unit" : "weeks",
+                        "type" : "Quantity"
+                     } ]
+                  } ]
+               } ]
+            }
+         }, {
             "name" : "IsPregnant",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Null"
+               "type" : "Or",
+               "operand" : [ {
+                  "type" : "Exists",
+                  "operand" : {
+                     "name" : "Confirmed",
+                     "libraryName" : "C3F",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "name" : "ActiveCondition",
+                        "libraryName" : "C3F",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "type" : "Union",
+                           "operand" : [ {
+                              "dataType" : "{http://hl7.org/fhir}Condition",
+                              "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
+                              "codeProperty" : "code",
+                              "codeComparator" : "in",
+                              "type" : "Retrieve",
+                              "codes" : {
+                                 "name" : "Pregnancy",
+                                 "type" : "ValueSetRef"
+                              }
+                           }, {
+                              "dataType" : "{http://hl7.org/fhir}Condition",
+                              "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
+                              "codeProperty" : "code",
+                              "codeComparator" : "in",
+                              "type" : "Retrieve",
+                              "codes" : {
+                                 "name" : "Pregnancy (New ICD10 codes published in 2018 and 2019)",
+                                 "type" : "ValueSetRef"
+                              }
+                           } ]
+                        } ]
+                     } ]
+                  }
+               }, {
+                  "type" : "Equivalent",
+                  "operand" : [ {
+                     "name" : "ConceptValue",
+                     "libraryName" : "C3F",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "name" : "MostRecentPregnancyObservation",
+                        "type" : "ExpressionRef"
+                     } ]
+                  }, {
+                     "type" : "ToConcept",
+                     "operand" : {
+                        "name" : "Pregnant",
+                        "type" : "CodeRef"
+                     }
+                  } ]
+               } ]
             }
          }, {
             "name" : "HadDiabetes",

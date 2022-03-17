@@ -14,12 +14,15 @@ valueset "Pregnancy (New ICD10 codes published in 2018 and 2019)": 'https://cts.
 // This next set includes SNOMED-CT and ICD-10-CM codes for prediabetes, impaired glucose tolerance (IGT) and impaired fasting glucose (IFG)
 valueset "Prediabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419'
 
-// for some reason the LOINC code for body height in inches produces null results. 
+// the LOINC code for body height in inches produces null results in retrieves 
 // code BodyHeight: '8302-0' from "LOINC" display 'Body height'
 // using snomed code instead
 code BodyHeightCode: '50373000' from "SNOMED-CT" display 'Body height measure'
 code BodyWeightCode: '3141-9' from "LOINC" display 'Body weight'
 code BmiCode: '39156-5' from "LOINC" display 'BMI'
+code "Pregnancy status": '82810-3' from "LOINC" display 'Pregnancy status'
+code "Pregnant": '77386006' from "SNOMED-CT" display 'Patient currently pregnant (finding)'
+
 
 context Patient
 
@@ -69,8 +72,16 @@ define ScreeningNeverDone:
 define BMI:
   WeightInKilos/(HeightInMeters^2)
 
+define MostRecentPregnancyObservation:
+  C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack([Observation: "Pregnancy status"], 42 weeks)))
+
 define IsPregnant:
-  null
+  Exists(C3F.Confirmed(C3F.ActiveCondition(
+    [Condition: "Pregnancy"] union 
+    [Condition: "Pregnancy (New ICD10 codes published in 2018 and 2019)"]
+  )))
+  or C3F.ConceptValue(MostRecentPregnancyObservation) ~ "Pregnant"
+
 
 define HadDiabetes:
   null
