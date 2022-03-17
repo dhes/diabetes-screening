@@ -1,0 +1,18 @@
+name: exclusion_is_pregnant_by_observation
+data:
+  - resourceType: Patient
+    name: Jane Smith
+    gender: female
+# 41 years old on 2021-12-31
+    birthDate: 1980-12-31
+  - resourceType: Observation
+    status: final
+    code: 'LOINC#82810-3 Pregnancy Status'
+    # this was the first try...: 
+    # valueCodeableConcept: 'LOINC#LA15173-0 Pregnant'
+    valueCodeableConcept: 'SNOMEDCT#77386006 Patient currently pregnant (finding)'
+# three months pregnant on 2021-12-31
+    effectiveDateTime: 2021-09-30T00:00:00-10:00
+results:
+  NeedMoreInformation: null
+  Recommendation: null

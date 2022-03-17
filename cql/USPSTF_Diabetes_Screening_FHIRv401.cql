@@ -14,7 +14,7 @@ valueset "Pregnancy (New ICD10 codes published in 2018 and 2019)": 'https://cts.
 // This next set includes SNOMED-CT and ICD-10-CM codes for prediabetes, impaired glucose tolerance (IGT) and impaired fasting glucose (IFG)
 valueset "Prediabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419'
 
-// the LOINC code for body height in inches produces null results in retrieves 
+// the LOINC code for body height in inches produces null results in retrieve
 // code BodyHeight: '8302-0' from "LOINC" display 'Body height'
 // using snomed code instead
 code BodyHeightCode: '50373000' from "SNOMED-CT" display 'Body height measure'
@@ -89,7 +89,8 @@ define HadDiabetes:
 define HasPrediabetes: // which includes IGG and IFG
   null
 
-define IsExcluded: false
+define IsExcluded: 
+  if IsPregnant then true else false
 
 define NeedMoreInformation:
   if IsExcluded is false then

@@ -1,0 +1,15 @@
+name: exclusion_is_pregnant_by_condition
+data:
+  - resourceType: Patient
+    name: Jane Smith
+    gender: female
+# 41 years old on 2021-12-31
+    birthDate: 1980-12-31
+  - resourceType: Condition
+    verificationStatus: 'http://terminology.hl7.org/CodeSystem/condition-ver-status#confirmed Confirmed'
+    clinicalStatus: 'http://terminology.hl7.org/CodeSystem/condition-clinical#active Active'
+    # abatement: null
+    code: 'ICD10CM#Z33.1 Pregnancy (single) (uterine)'
+results:
+  NeedMoreInformation: null
+  Recommendation: null
