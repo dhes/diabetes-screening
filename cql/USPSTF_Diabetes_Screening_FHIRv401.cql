@@ -83,14 +83,17 @@ define IsPregnant:
   or C3F.ConceptValue(MostRecentPregnancyObservation) ~ "Pregnant"
 
 
-define HadDiabetes:
-  null
+define HasDiabetes:
+  Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Diabetes"])))
 
 define HasPrediabetes: // which includes IGG and IFG
-  null
+  Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
 
 define IsExcluded: 
-  if IsPregnant then true else false
+  if IsPregnant or
+    HasDiabetes or
+    HasPrediabetes then true 
+  else false
 
 define NeedMoreInformation:
   if IsExcluded is false then

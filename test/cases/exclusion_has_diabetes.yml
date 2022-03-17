@@ -1,0 +1,14 @@
+name: exclusion_has_diabetes
+data:
+  - resourceType: Patient
+    name: Joe Smith
+    gender: male
+    # in the middle of the age range
+    birthDate: 1968-06-30
+  - resourceType: Condition
+    clinicalStatus: 'http://terminology.hl7.org/CodeSystem/condition-clinical#active Active'
+    verificationStatus: 'http://terminology.hl7.org/CodeSystem/condition-ver-status#confirmed Confirmed'
+    code: 'ICD10CM#E11.9 Type 2 diabetes mellitus without complications'
+results:
+  NeedMoreInformation: null
+  Recommendation: null

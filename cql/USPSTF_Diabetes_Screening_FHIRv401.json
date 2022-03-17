@@ -595,18 +595,60 @@
                } ]
             }
          }, {
-            "name" : "HadDiabetes",
+            "name" : "HasDiabetes",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Null"
+               "type" : "Exists",
+               "operand" : {
+                  "name" : "Confirmed",
+                  "libraryName" : "C3F",
+                  "type" : "FunctionRef",
+                  "operand" : [ {
+                     "name" : "ActiveCondition",
+                     "libraryName" : "C3F",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}Condition",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
+                        "codeProperty" : "code",
+                        "codeComparator" : "in",
+                        "type" : "Retrieve",
+                        "codes" : {
+                           "name" : "Diabetes",
+                           "type" : "ValueSetRef"
+                        }
+                     } ]
+                  } ]
+               }
             }
          }, {
             "name" : "HasPrediabetes",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Null"
+               "type" : "Exists",
+               "operand" : {
+                  "name" : "Confirmed",
+                  "libraryName" : "C3F",
+                  "type" : "FunctionRef",
+                  "operand" : [ {
+                     "name" : "ActiveCondition",
+                     "libraryName" : "C3F",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}Condition",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
+                        "codeProperty" : "code",
+                        "codeComparator" : "in",
+                        "type" : "Retrieve",
+                        "codes" : {
+                           "name" : "Prediabetes",
+                           "type" : "ValueSetRef"
+                        }
+                     } ]
+                  } ]
+               }
             }
          }, {
             "name" : "IsExcluded",
@@ -618,8 +660,20 @@
                   "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
                   "type" : "As",
                   "operand" : {
-                     "name" : "IsPregnant",
-                     "type" : "ExpressionRef"
+                     "type" : "Or",
+                     "operand" : [ {
+                        "type" : "Or",
+                        "operand" : [ {
+                           "name" : "IsPregnant",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "name" : "HasDiabetes",
+                           "type" : "ExpressionRef"
+                        } ]
+                     }, {
+                        "name" : "HasPrediabetes",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
                },
                "then" : {
