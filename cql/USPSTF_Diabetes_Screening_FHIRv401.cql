@@ -75,3 +75,14 @@ define WeightInKilos:
 
 define BMI:
   WeightInKilos/(HeightInMeters^2)
+
+define Recommendation: null
+
+define MeetsExclusionCriteria: false
+
+define NeedMoreInformation:
+  if not MeetsExclusionCriteria then
+    Combine(List{
+      if Patient.birthDate is null then '- date of birth' else null
+    }, '\n') 
+  else null
