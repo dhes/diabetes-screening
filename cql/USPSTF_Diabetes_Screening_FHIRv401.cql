@@ -81,7 +81,7 @@ define HasPrediabetes: // which includes IGG and IFG
 define IsExcluded: false
 
 define NeedMoreInformation:
-  if not IsExcluded then
+  if IsExcluded is false then
     if InAgeRange is null then
       '- date of birth'
     else

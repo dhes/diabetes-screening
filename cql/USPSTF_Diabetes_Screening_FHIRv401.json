@@ -520,7 +520,7 @@
                   "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
                   "type" : "As",
                   "operand" : {
-                     "type" : "Not",
+                     "type" : "IsFalse",
                      "operand" : {
                         "name" : "IsExcluded",
                         "type" : "ExpressionRef"
