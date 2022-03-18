@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: excluded_screened_recently
+name: excluded_screened_recently_GTT
 data:
   - resourceType: Patient
     extension:
@@ -37,8 +37,9 @@ data:
     effectiveDateTime: '2022-03-13'
     valueQuantity: 201 [lb_av]
   - resourceType: Observation
+    category: 'OBS-CAT#laboratory Laboratory'
     status: final
-    code: 'LOINC#4548-4 Hemoglobin A1c/Hemoglobin.total in Blood'
+    code: 'LOINC#1518-0 Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO'
     valueQuantity: 5.7 %
 # four years ago hawaii time
     effectiveDateTime: 2017-12-31T00:00:00-10:00
