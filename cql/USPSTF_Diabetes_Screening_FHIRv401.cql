@@ -13,6 +13,7 @@ valueset "Pregnancy": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3
 valueset "Pregnancy (New ICD10 codes published in 2018 and 2019)": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.80'
 // This next set includes SNOMED-CT and ICD-10-CM codes for prediabetes, impaired glucose tolerance (IGT) and impaired fasting glucose (IFG)
 valueset "Prediabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419'
+valueset "HemoglobinA1cTest": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1195.278'
 
 // the LOINC code for body height in inches produces null results in retrieve
 // code BodyHeight: '8302-0' from "LOINC" display 'Body height'
@@ -85,15 +86,19 @@ define IsPregnant:
   )))
   or C3F.ConceptValue(MostRecentPregnancyObservation) ~ "Pregnant"
 
-
 define HasDiabetes:
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Diabetes"])))
 
 define HasPrediabetes: // which includes IGG and IFG
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
 
-define HadRecentScreening:
-  false
+
+// This time interval is the outer bound of that suggested by Kahn et al in 
+// Lancet. 2010 Apr 17;375(9723):1365-74. doi: 10.1016/S0140-6736(09)62162-0. Epub 2010 Mar 29.
+// Age at initiation and frequency of screening to detect type 2 diabetes: a cost-effectiveness analysis
+define ScreenedWithinFiveYears:
+  C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack(
+    [Observation: "HemoglobinA1cTest"], 5 years)))
 
 define IsExcluded: 
   if IsPregnant or
@@ -118,7 +123,7 @@ define Recommendation:
   if InAgeRange is true and 
     BMIIsTwentyFiveOrGreater is true and 
     NeedMoreInformation is null and
-    //  ScreeningNeverDone is true
+    ScreenedWithinFiveYears is null and
     IsExcluded is false 
     then '- order HbA1c'
   else null

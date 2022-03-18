@@ -65,6 +65,10 @@
             "name" : "Prediabetes",
             "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419",
             "accessLevel" : "Public"
+         }, {
+            "name" : "HemoglobinA1cTest",
+            "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1195.278",
+            "accessLevel" : "Public"
          } ]
       },
       "codes" : {
@@ -669,6 +673,40 @@
                }
             }
          }, {
+            "name" : "ScreenedWithinFiveYears",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Verified",
+                  "libraryName" : "C3F",
+                  "type" : "FunctionRef",
+                  "operand" : [ {
+                     "name" : "ObservationLookBack",
+                     "libraryName" : "C3F",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "in",
+                        "type" : "Retrieve",
+                        "codes" : {
+                           "name" : "HemoglobinA1cTest",
+                           "type" : "ValueSetRef"
+                        }
+                     }, {
+                        "value" : 5,
+                        "unit" : "years",
+                        "type" : "Quantity"
+                     } ]
+                  } ]
+               } ]
+            }
+         }, {
             "name" : "IsExcluded",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -848,22 +886,31 @@
                         "operand" : [ {
                            "type" : "And",
                            "operand" : [ {
-                              "type" : "IsTrue",
-                              "operand" : {
-                                 "name" : "InAgeRange",
-                                 "type" : "ExpressionRef"
-                              }
+                              "type" : "And",
+                              "operand" : [ {
+                                 "type" : "IsTrue",
+                                 "operand" : {
+                                    "name" : "InAgeRange",
+                                    "type" : "ExpressionRef"
+                                 }
+                              }, {
+                                 "type" : "IsTrue",
+                                 "operand" : {
+                                    "name" : "BMIIsTwentyFiveOrGreater",
+                                    "type" : "ExpressionRef"
+                                 }
+                              } ]
                            }, {
-                              "type" : "IsTrue",
+                              "type" : "IsNull",
                               "operand" : {
-                                 "name" : "BMIIsTwentyFiveOrGreater",
+                                 "name" : "NeedMoreInformation",
                                  "type" : "ExpressionRef"
                               }
                            } ]
                         }, {
                            "type" : "IsNull",
                            "operand" : {
-                              "name" : "NeedMoreInformation",
+                              "name" : "ScreenedWithinFiveYears",
                               "type" : "ExpressionRef"
                            }
                         } ]

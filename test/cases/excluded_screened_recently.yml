@@ -1,0 +1,47 @@
+# If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
+name: excluded_screened_recently
+data:
+  - resourceType: Patient
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: 2106-3
+              display: White
+          - url: text
+            valueString: White
+    active: true
+    name: Ferd Berfel
+    gender: male
+    birthDate: 1953-06-05
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    # code: 'LOINC#8302-2 Body height'
+    code: 'SNOMEDCT#50373000 Body height measure'
+    effectiveDateTime: '2021-03-13'
+    valueQuantity: 70 [in_i]
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    # code: 'LOINC#8302-2 Body height'
+    code: 'SNOMEDCT#50373000 Body height measure'
+    effectiveDateTime: '2022-03-13'
+    valueQuantity: 178 cm
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#3141-9 Body weight'
+    effectiveDateTime: '2022-03-13'
+    valueQuantity: 201 [lb_av]
+  - resourceType: Observation
+    status: final
+    code: 'LOINC#4548-4 Hemoglobin A1c/Hemoglobin.total in Blood'
+    valueQuantity: 5.7 %
+# four years ago hawaii time
+    effectiveDateTime: 2017-12-31T00:00:00-10:00
+results:
+  NeedMoreInformation: null
+  Recommendation: null
