@@ -497,6 +497,24 @@
                } ]
             }
          }, {
+            "name" : "BMIIsTwentyFiveOrGreater",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "GreaterOrEqual",
+               "operand" : [ {
+                  "name" : "BMI",
+                  "type" : "ExpressionRef"
+               }, {
+                  "type" : "ToDecimal",
+                  "operand" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "25",
+                     "type" : "Literal"
+                  }
+               } ]
+            }
+         }, {
             "name" : "MostRecentPregnancyObservation",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -828,11 +846,20 @@
                      "operand" : [ {
                         "type" : "And",
                         "operand" : [ {
-                           "type" : "IsTrue",
-                           "operand" : {
-                              "name" : "InAgeRange",
-                              "type" : "ExpressionRef"
-                           }
+                           "type" : "And",
+                           "operand" : [ {
+                              "type" : "IsTrue",
+                              "operand" : {
+                                 "name" : "InAgeRange",
+                                 "type" : "ExpressionRef"
+                              }
+                           }, {
+                              "type" : "IsTrue",
+                              "operand" : {
+                                 "name" : "BMIIsTwentyFiveOrGreater",
+                                 "type" : "ExpressionRef"
+                              }
+                           } ]
                         }, {
                            "type" : "IsNull",
                            "operand" : {

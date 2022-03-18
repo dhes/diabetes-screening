@@ -133,4 +133,4 @@ data:
     valueQuantity: 25 kg/m2
 results:
   NeedMoreInformation: null
-  Recommendation: '- order HbA1c'
+  Recommendation: null

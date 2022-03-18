@@ -72,6 +72,9 @@ define ScreeningNeverDone:
 define BMI:
   WeightInKilos/(HeightInMeters^2)
 
+define BMIIsTwentyFiveOrGreater:
+  BMI>=25
+
 define MostRecentPregnancyObservation:
   C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack([Observation: "Pregnancy status"], 42 weeks)))
 
@@ -88,6 +91,9 @@ define HasDiabetes:
 
 define HasPrediabetes: // which includes IGG and IFG
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
+
+define HadRecentScreening:
+  false
 
 define IsExcluded: 
   if IsPregnant or
@@ -109,7 +115,8 @@ define NeedMoreInformation:
   else null
 
 define Recommendation: 
-  if InAgeRange is true and  
+  if InAgeRange is true and 
+    BMIIsTwentyFiveOrGreater is true and 
     NeedMoreInformation is null and
     //  ScreeningNeverDone is true
     IsExcluded is false 
