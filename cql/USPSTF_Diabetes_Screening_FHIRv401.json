@@ -69,10 +69,22 @@
             "name" : "HemoglobinA1cTest",
             "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1195.278",
             "accessLevel" : "Public"
+         }, {
+            "name" : "FastingPlasmaGlucose",
+            "id" : "https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.87",
+            "accessLevel" : "Public"
          } ]
       },
       "codes" : {
          "def" : [ {
+            "name" : "BloodGlucoseTwoHoursPostLoad",
+            "id" : "1518-0",
+            "display" : "Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO",
+            "accessLevel" : "Public",
+            "codeSystem" : {
+               "name" : "LOINC"
+            }
+         }, {
             "name" : "BodyHeightCode",
             "id" : "50373000",
             "display" : "Body height measure",

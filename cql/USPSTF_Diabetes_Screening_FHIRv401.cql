@@ -14,6 +14,9 @@ valueset "Pregnancy (New ICD10 codes published in 2018 and 2019)": 'https://cts.
 // This next set includes SNOMED-CT and ICD-10-CM codes for prediabetes, impaired glucose tolerance (IGT) and impaired fasting glucose (IFG)
 valueset "Prediabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419'
 valueset "HemoglobinA1cTest": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1195.278'
+valueset "FastingPlasmaGlucose": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.87'
+// Using single code for 2h PP glucose because there doesn't appear to be an appropriate valueset
+code "BloodGlucoseTwoHoursPostLoad": '1518-0' from LOINC display 'Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO'
 
 // the LOINC code for body height in inches produces null results in retrieve
 // code BodyHeight: '8302-0' from "LOINC" display 'Body height'
@@ -23,7 +26,6 @@ code BodyWeightCode: '3141-9' from "LOINC" display 'Body weight'
 code BmiCode: '39156-5' from "LOINC" display 'BMI'
 code "Pregnancy status": '82810-3' from "LOINC" display 'Pregnancy status'
 code "Pregnant": '77386006' from "SNOMED-CT" display 'Patient currently pregnant (finding)'
-
 
 context Patient
 

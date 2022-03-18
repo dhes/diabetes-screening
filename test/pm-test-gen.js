@@ -5,8 +5,8 @@ function expectOK(testCase) {
 function expectCards(testCase) {
   if (testCase.expected != null) {
     return (
-      testCase.expected.YesRecommendation != null ||
-      testCase.expected.NeedMoreInformation != null
+      testCase.expected.NeedMoreInformation != null ||
+      testCase.expected.Recommendation != null 
     );
   }
 }
@@ -14,38 +14,27 @@ function expectCards(testCase) {
 function expectCardsContent(testCase) {
   if (expectCards(testCase)) {
     const cardArray = [];
-    if (testCase.expected.YesRecommendation != null) {
+    if (testCase.expected.Recommendation != null) {
       cardArray.push({
-        uuid: 4,
-        summary: "Statin Use for the Primary Prevention of CVD",
+        summary: "Prediabetes and Type 2 Diabetes: Screening",
         indicator: "info",
-        detail: testCase.expected.YesRecommendation + testCase.expected.ExclusionCriteria,
+        detail: testCase.expected.Recommendation,
         source: {
           label:
-            "CDS Connect: Statin Use for the Primary Prevention of CVD in Adults",
-          url: "https://cds.ahrq.gov/cdsconnect/artifact/statin-use-primary-prevention-cvd-adults",
-        },
-        overrideReasons: [
-          {
-            uuid: 4,
-            display: "Done reviewing",
-          },
-        ],
-        extension: {
-          grade: testCase.expected.RecommendationGrade,
-          rationale: testCase.expected.Rationale,
+            "Prediabetes and Type 2 Diabetes: Screening",
+          url: "https://uspreventiveservicestaskforce.org/uspstf/recommendation/screening-for-prediabetes-and-type-2-diabetes",
         },
       });
     }
     if (testCase.expected.NeedMoreInformation != null) {
       cardArray.push({
-        summary: "More information needed to complete Statin Use assessment",
+        summary: "More information needed to complete diabetes screening assessment",
         indicator: "warning",
         detail: testCase.expected.NeedMoreInformation,
         source: {
           label:
-            "CDS Connect: Statin Use for the Primary Prevention of CVD in Adults",
-          url: "https://cds.ahrq.gov/cdsconnect/artifact/statin-use-primary-prevention-cvd-adults",
+            "Prediabetes and Type 2 Diabetes: Screening",
+          url: "https://uspreventiveservicestaskforce.org/uspstf/recommendation/screening-for-prediabetes-and-type-2-diabetes",
         },
       });
     }
