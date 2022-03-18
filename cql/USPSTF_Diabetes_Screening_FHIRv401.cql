@@ -100,7 +100,9 @@ define HasPrediabetes: // which includes IGG and IFG
 // Age at initiation and frequency of screening to detect type 2 diabetes: a cost-effectiveness analysis
 define ScreenedWithinFiveYears:
   C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack(
-    [Observation: "HemoglobinA1cTest"], 5 years)))
+    [Observation: "HemoglobinA1cTest"] union
+    [Observation: "FastingPlasmaGlucose"] union
+    [Observation: "BloodGlucoseTwoHoursPostLoad"], 5 years)))
 
 define IsExcluded: 
   if IsPregnant or

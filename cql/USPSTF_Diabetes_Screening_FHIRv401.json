@@ -701,15 +701,44 @@
                      "libraryName" : "C3F",
                      "type" : "FunctionRef",
                      "operand" : [ {
-                        "dataType" : "{http://hl7.org/fhir}Observation",
-                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
-                        "codeProperty" : "code",
-                        "codeComparator" : "in",
-                        "type" : "Retrieve",
-                        "codes" : {
-                           "name" : "HemoglobinA1cTest",
-                           "type" : "ValueSetRef"
-                        }
+                        "type" : "Union",
+                        "operand" : [ {
+                           "type" : "Union",
+                           "operand" : [ {
+                              "dataType" : "{http://hl7.org/fhir}Observation",
+                              "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                              "codeProperty" : "code",
+                              "codeComparator" : "in",
+                              "type" : "Retrieve",
+                              "codes" : {
+                                 "name" : "HemoglobinA1cTest",
+                                 "type" : "ValueSetRef"
+                              }
+                           }, {
+                              "dataType" : "{http://hl7.org/fhir}Observation",
+                              "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                              "codeProperty" : "code",
+                              "codeComparator" : "in",
+                              "type" : "Retrieve",
+                              "codes" : {
+                                 "name" : "FastingPlasmaGlucose",
+                                 "type" : "ValueSetRef"
+                              }
+                           } ]
+                        }, {
+                           "dataType" : "{http://hl7.org/fhir}Observation",
+                           "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                           "codeProperty" : "code",
+                           "codeComparator" : "~",
+                           "type" : "Retrieve",
+                           "codes" : {
+                              "type" : "ToList",
+                              "operand" : {
+                                 "name" : "BloodGlucoseTwoHoursPostLoad",
+                                 "type" : "CodeRef"
+                              }
+                           }
+                        } ]
                      }, {
                         "value" : 5,
                         "unit" : "years",
