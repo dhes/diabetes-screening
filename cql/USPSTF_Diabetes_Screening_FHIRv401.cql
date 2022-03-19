@@ -8,14 +8,23 @@ codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED-CT": 'http://snomed.info/sct'
 codesystem "ICD-10-CM": 'http://hl7.org/fhir/sid/icd-10-cm'
 
+// + indicates this set is also in diabetes-screening, - that it is not
+// +
 valueset "Diabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.103.12.1001'
+// +
 valueset "Pregnancy": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.526.3.378'
+// +
 valueset "Pregnancy (New ICD10 codes published in 2018 and 2019)": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.80'
 // This next set includes SNOMED-CT and ICD-10-CM codes for prediabetes, impaired glucose tolerance (IGT) and impaired fasting glucose (IFG)
+// -
 valueset "Prediabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1222.419'
+// -
 valueset "HemoglobinA1cTest": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1195.278'
+// +
 valueset "FastingPlasmaGlucose": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1032.87'
-// Using single code for 2h PP glucose because there doesn't appear to be an appropriate valueset
+// Using single code for 2h PP glucose 
+// diabetes-screening-cds-connect uses valueset 2.16.840.1.113762.1.4.1032.94 containing 20 kinds of GTT result
+// but.... the USPSTF guideline text specifies the two-hour 75 gm load version, so here a single code is used
 code "BloodGlucoseTwoHoursPostLoad": '1518-0' from LOINC display 'Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO'
 
 // the LOINC code for body height in inches produces null results in retrieve
