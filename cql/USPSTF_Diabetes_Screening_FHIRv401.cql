@@ -94,15 +94,12 @@ define HasDiabetes:
 define HasPrediabetes: // which includes IGG and IFG
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
 
-
-// This time interval is the outer bound of that suggested by Kahn et al in 
-// Lancet. 2010 Apr 17;375(9723):1365-74. doi: 10.1016/S0140-6736(09)62162-0. Epub 2010 Mar 29.
-// Age at initiation and frequency of screening to detect type 2 diabetes: a cost-effectiveness analysis
+// 3 years is the interval suggested by the guideline
 define ScreenedWithinFiveYears:
   C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack(
     [Observation: "HemoglobinA1cTest"] union
     [Observation: "FastingPlasmaGlucose"] union
-    [Observation: "BloodGlucoseTwoHoursPostLoad"], 5 years)))
+    [Observation: "BloodGlucoseTwoHoursPostLoad"], 3 years)))
 
 define IsExcluded: 
   if IsPregnant or

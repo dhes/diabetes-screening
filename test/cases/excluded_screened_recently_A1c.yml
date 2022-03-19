@@ -41,8 +41,8 @@ data:
     status: final
     code: 'LOINC#4548-4 Hemoglobin A1c/Hemoglobin.total in Blood'
     valueQuantity: 5.7 %
-# four years ago hawaii time
-    effectiveDateTime: 2017-12-31T00:00:00-10:00
+# two years ago hawaii time
+    effectiveDateTime: 2019-12-31T00:00:00-10:00
 results:
   NeedMoreInformation: null
   Recommendation: null

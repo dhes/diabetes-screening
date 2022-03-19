@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: screened_more_5_years_ago
+name: screened_more_than_3_years_ago
 data:
   - resourceType: Patient
     extension:
@@ -41,7 +41,7 @@ data:
     code: 'LOINC#4548-4 Hemoglobin A1c/Hemoglobin.total in Blood'
     valueQuantity: 5.7 %
 # six years ago hawaii time
-    effectiveDateTime: 2015-12-31T00:00:00-10:00
+    effectiveDateTime: 2017-12-31T00:00:00-10:00
 results:
   NeedMoreInformation: null
   Recommendation: |-
