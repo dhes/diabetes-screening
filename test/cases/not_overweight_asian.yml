@@ -1,12 +1,12 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: not_overweight
+name: not_overweight_asian
 data:
   - resourceType: Patient
     extension:
       - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
         extension:
           - url: ombCategory
-            valueCoding: 'urn:oid:2.16.840.1.113883.6.238#2106-3 White'
+            valueCoding: 'urn:oid:2.16.840.1.113883.6.238#2028-9 Asian'
     active: true
     name: Ferd Berfel
     gender: male

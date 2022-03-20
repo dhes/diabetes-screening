@@ -46,6 +46,10 @@
             "name" : "ICD-10-CM",
             "id" : "http://hl7.org/fhir/sid/icd-10-cm",
             "accessLevel" : "Public"
+         }, {
+            "name" : "Race & Ethnicity - CDC",
+            "id" : "urn:oid:2.16.840.1.113883.6.238",
+            "accessLevel" : "Public"
          } ]
       },
       "valueSets" : {
@@ -124,6 +128,14 @@
             "codeSystem" : {
                "name" : "SNOMED-CT"
             }
+         }, {
+            "name" : "Asian",
+            "id" : "2028-9",
+            "display" : "Asian",
+            "accessLevel" : "Public",
+            "codeSystem" : {
+               "name" : "Race & Ethnicity - CDC"
+            }
          } ]
       },
       "contexts" : {
@@ -141,6 +153,148 @@
                   "dataType" : "{http://hl7.org/fhir}Patient",
                   "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
                   "type" : "Retrieve"
+               }
+            }
+         }, {
+            "name" : "RaceExtension",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "SingletonFrom",
+               "operand" : {
+                  "type" : "Query",
+                  "source" : [ {
+                     "alias" : "Ext",
+                     "expression" : {
+                        "path" : "extension",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "Patient",
+                           "type" : "ExpressionRef"
+                        }
+                     }
+                  } ],
+                  "relationship" : [ ],
+                  "where" : {
+                     "type" : "Equal",
+                     "operand" : [ {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "url",
+                           "scope" : "Ext",
+                           "type" : "Property"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "type" : "Literal"
+                     } ]
+                  }
+               }
+            }
+         }, {
+            "name" : "RaceCodes",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "Ext",
+                  "expression" : {
+                     "path" : "extension",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "RaceExtension",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "Equal",
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "path" : "url",
+                        "scope" : "Ext",
+                        "type" : "Property"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "ombCategory",
+                     "type" : "Literal"
+                  } ]
+               },
+               "return" : {
+                  "expression" : {
+                     "name" : "ToCode",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "strict" : false,
+                        "type" : "As",
+                        "operand" : {
+                           "path" : "value",
+                           "scope" : "Ext",
+                           "type" : "Property"
+                        },
+                        "asTypeSpecifier" : {
+                           "name" : "{http://hl7.org/fhir}Coding",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               }
+            }
+         }, {
+            "name" : "IsAsian",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Exists",
+                     "operand" : {
+                        "name" : "RaceCodes",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               },
+               "then" : {
+                  "type" : "Exists",
+                  "operand" : {
+                     "type" : "Query",
+                     "source" : [ {
+                        "alias" : "RC",
+                        "expression" : {
+                           "name" : "RaceCodes",
+                           "type" : "ExpressionRef"
+                        }
+                     } ],
+                     "relationship" : [ ],
+                     "where" : {
+                        "type" : "Equivalent",
+                        "operand" : [ {
+                           "name" : "RC",
+                           "type" : "AliasRef"
+                        }, {
+                           "name" : "Asian",
+                           "type" : "CodeRef"
+                        } ]
+                     }
+                  }
+               },
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
                }
             }
          }, {
@@ -266,6 +420,55 @@
                   "operand" : {
                      "name" : "BmiCode",
                      "type" : "CodeRef"
+                  }
+               }
+            }
+         }, {
+            "name" : "Gender",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Case",
+               "comparand" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "path" : "gender",
+                     "type" : "Property",
+                     "source" : {
+                        "name" : "Patient",
+                        "type" : "ExpressionRef"
+                     }
+                  }
+               },
+               "caseItem" : [ {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "male",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "He",
+                     "type" : "Literal"
+                  }
+               }, {
+                  "when" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "female",
+                     "type" : "Literal"
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "She",
+                     "type" : "Literal"
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
                   }
                }
             }
@@ -531,6 +734,133 @@
                } ]
             }
          }, {
+            "name" : "IsOverweight",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Not",
+                     "operand" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "BMI",
+                           "type" : "ExpressionRef"
+                        }
+                     }
+                  }
+               },
+               "then" : {
+                  "type" : "Case",
+                  "caseItem" : [ {
+                     "when" : {
+                        "type" : "And",
+                        "operand" : [ {
+                           "name" : "IsAsian",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "type" : "GreaterOrEqual",
+                           "operand" : [ {
+                              "name" : "BMI",
+                              "type" : "ExpressionRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                              "value" : "23.0",
+                              "type" : "Literal"
+                           } ]
+                        } ]
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                        "value" : "true",
+                        "type" : "Literal"
+                     }
+                  }, {
+                     "when" : {
+                        "type" : "GreaterOrEqual",
+                        "operand" : [ {
+                           "name" : "BMI",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                           "value" : "25.0",
+                           "type" : "Literal"
+                        } ]
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                        "value" : "true",
+                        "type" : "Literal"
+                     }
+                  } ],
+                  "else" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "false",
+                     "type" : "Literal"
+                  }
+               },
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
+            }
+         }, {
+            "name" : "IsObese",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "GreaterOrEqual",
+               "operand" : [ {
+                  "name" : "BMI",
+                  "type" : "ExpressionRef"
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                  "value" : "30.0",
+                  "type" : "Literal"
+               } ]
+            }
+         }, {
+            "name" : "ScreeningTrigger",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Case",
+               "caseItem" : [ {
+                  "when" : {
+                     "name" : "IsObese",
+                     "type" : "ExpressionRef"
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "obese",
+                     "type" : "Literal"
+                  }
+               }, {
+                  "when" : {
+                     "name" : "IsOverweight",
+                     "type" : "ExpressionRef"
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "overweight",
+                     "type" : "Literal"
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
+            }
+         }, {
             "name" : "MostRecentPregnancyObservation",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -685,7 +1015,7 @@
                }
             }
          }, {
-            "name" : "ScreenedWithinFiveYears",
+            "name" : "ScreenedWithinThreeYears",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -937,7 +1267,7 @@
                               }, {
                                  "type" : "IsTrue",
                                  "operand" : {
-                                    "name" : "BMIIsTwentyFiveOrGreater",
+                                    "name" : "IsOverweight",
                                     "type" : "ExpressionRef"
                                  }
                               } ]
@@ -951,7 +1281,7 @@
                         }, {
                            "type" : "IsNull",
                            "operand" : {
-                              "name" : "ScreenedWithinFiveYears",
+                              "name" : "ScreenedWithinThreeYears",
                               "type" : "ExpressionRef"
                            }
                         } ]
@@ -965,9 +1295,35 @@
                   }
                },
                "then" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                  "value" : "- order HbA1c",
-                  "type" : "Literal"
+                  "type" : "Concatenate",
+                  "operand" : [ {
+                     "type" : "Concatenate",
+                     "operand" : [ {
+                        "type" : "Concatenate",
+                        "operand" : [ {
+                           "type" : "Concatenate",
+                           "operand" : [ {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                              "value" : "This patient is ",
+                              "type" : "Literal"
+                           }, {
+                              "name" : "ScreeningTrigger",
+                              "type" : "ExpressionRef"
+                           } ]
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : ". ",
+                           "type" : "Literal"
+                        } ]
+                     }, {
+                        "name" : "Gender",
+                        "type" : "ExpressionRef"
+                     } ]
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : " should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.",
+                     "type" : "Literal"
+                  } ]
                },
                "else" : {
                   "asType" : "{urn:hl7-org:elm-types:r1}String",

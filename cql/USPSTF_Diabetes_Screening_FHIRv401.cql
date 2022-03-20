@@ -7,8 +7,9 @@ include CDS_Connect_Commons_for_FHIRv401 version '1.0.0' called C3F
 codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED-CT": 'http://snomed.info/sct'
 codesystem "ICD-10-CM": 'http://hl7.org/fhir/sid/icd-10-cm'
+codesystem "Race & Ethnicity - CDC": 'urn:oid:2.16.840.1.113883.6.238'
 
-// + indicates this set is also in diabetes-screening, - that it is not
+// + indicates this set is also in diabetes-screening-cds-connect, - that it is not
 // +
 valueset "Diabetes": 'https://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.103.12.1001'
 // +
@@ -35,8 +36,20 @@ code BodyWeightCode: '3141-9' from "LOINC" display 'Body weight'
 code BmiCode: '39156-5' from "LOINC" display 'BMI'
 code "Pregnancy status": '82810-3' from "LOINC" display 'Pregnancy status'
 code "Pregnant": '77386006' from "SNOMED-CT" display 'Patient currently pregnant (finding)'
+code "Asian": '2028-9' from "Race & Ethnicity - CDC" display 'Asian'
 
 context Patient
+
+define RaceExtension:
+	singleton from (
+		Patient.extension Ext
+		where Ext.url.value = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race'
+	)
+
+define RaceCodes:
+	(RaceExtension.extension) Ext where Ext.url.value = 'ombCategory' return FHIRHelpers.ToCode(Ext.value as FHIR.Coding)
+
+define IsAsian: if exists (RaceCodes) then exists (RaceCodes RC where RC ~ "Asian") else null
 
 define InAgeRange: 
   if Patient.birthDate is not null then 
@@ -51,6 +64,13 @@ define Weights:
 
 define BmiObservations:
   [Observation: BmiCode]
+
+define Gender: 
+  case Patient.gender.value
+    when 'male' then 'He'
+    when 'female' then 'She'
+    else null
+  end
 
 define Height:
   FHIRHelpers.ToQuantity(C3F.MostRecent(Heights).value)
@@ -87,6 +107,25 @@ define BMI:
 define BMIIsTwentyFiveOrGreater:
   BMI>=25
 
+define IsOverweight:
+  if BMI is not null then 
+    case
+      when IsAsian and BMI>=23.0 then true
+      when BMI>= 25.0 then true
+      else false
+    end
+  else null
+
+define IsObese: 
+  BMI>=30.0
+
+define ScreeningTrigger:
+  case 
+    when IsObese then 'obese' // if the patient is obese I assume this will short-circuit
+    when IsOverweight then 'overweight'
+    else null
+  end
+
 define MostRecentPregnancyObservation:
   C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack([Observation: "Pregnancy status"], 42 weeks)))
 
@@ -104,7 +143,7 @@ define HasPrediabetes: // which includes IGG and IFG
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
 
 // 3 years is the interval suggested by the guideline
-define ScreenedWithinFiveYears:
+define ScreenedWithinThreeYears:
   C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack(
     [Observation: "HemoglobinA1cTest"] union
     [Observation: "FastingPlasmaGlucose"] union
@@ -131,10 +170,12 @@ define NeedMoreInformation:
 
 define Recommendation: 
   if InAgeRange is true and 
-    BMIIsTwentyFiveOrGreater is true and 
+    IsOverweight is true and 
     NeedMoreInformation is null and
-    ScreenedWithinFiveYears is null and
+    ScreenedWithinThreeYears is null and
     IsExcluded is false 
-    then '- order HbA1c'
+    // then '- order HbA1c'
+    then 'This patient is ' + ScreeningTrigger + '. ' + Gender + 
+      ' should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.'
   else null
 

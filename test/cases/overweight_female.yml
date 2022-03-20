@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: not_overweight
+name: overweight_female
 data:
   - resourceType: Patient
     extension:
@@ -8,8 +8,8 @@ data:
           - url: ombCategory
             valueCoding: 'urn:oid:2.16.840.1.113883.6.238#2106-3 White'
     active: true
-    name: Ferd Berfel
-    gender: male
+    name: Ferdina Berfel
+    gender: female
     birthDate: 1953-06-05
   - resourceType: Observation
     status: final
@@ -30,8 +30,8 @@ data:
     category: 'OBS-CAT#vital-signs Vital Signs'
     code: 'LOINC#3141-9 Body weight'
     effectiveDateTime: '2022-03-13'
-    valueQuantity: 160 [lb_av]
-#   calculated BMI will be 22.905814922358285,
+    valueQuantity: 201 [lb_av]
 results:
   NeedMoreInformation: null
-  Recommendation: null
+  Recommendation: |-
+    This patient is overweight. She should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.

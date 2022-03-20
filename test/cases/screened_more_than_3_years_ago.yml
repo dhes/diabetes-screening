@@ -40,4 +40,4 @@ data:
 results:
   NeedMoreInformation: null
   Recommendation: |-
-    - order HbA1c
+    This patient is overweight. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.

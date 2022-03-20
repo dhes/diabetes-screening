@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: not_overweight
+name: obese
 data:
   - resourceType: Patient
     extension:
@@ -21,17 +21,10 @@ data:
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
-    # code: 'LOINC#8302-2 Body height'
-    code: 'SNOMEDCT#50373000 Body height measure'
-    effectiveDateTime: '2022-03-13'
-    valueQuantity: 178 cm
-  - resourceType: Observation
-    status: final
-    category: 'OBS-CAT#vital-signs Vital Signs'
     code: 'LOINC#3141-9 Body weight'
     effectiveDateTime: '2022-03-13'
-    valueQuantity: 160 [lb_av]
-#   calculated BMI will be 22.905814922358285,
+    valueQuantity: 210 [lb_av]
 results:
   NeedMoreInformation: null
-  Recommendation: null
+  Recommendation: |-
+    This patient is obese. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.
