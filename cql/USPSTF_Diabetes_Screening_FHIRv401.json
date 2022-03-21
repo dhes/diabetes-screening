@@ -716,24 +716,6 @@
                } ]
             }
          }, {
-            "name" : "BMIIsTwentyFiveOrGreater",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "GreaterOrEqual",
-               "operand" : [ {
-                  "name" : "BMI",
-                  "type" : "ExpressionRef"
-               }, {
-                  "type" : "ToDecimal",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "25",
-                     "type" : "Literal"
-                  }
-               } ]
-            }
-         }, {
             "name" : "IsOverweight",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -762,14 +744,24 @@
                            "name" : "IsAsian",
                            "type" : "ExpressionRef"
                         }, {
-                           "type" : "GreaterOrEqual",
+                           "type" : "In",
                            "operand" : [ {
                               "name" : "BMI",
                               "type" : "ExpressionRef"
                            }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
-                              "value" : "23.0",
-                              "type" : "Literal"
+                              "lowClosed" : true,
+                              "highClosed" : false,
+                              "type" : "Interval",
+                              "low" : {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                                 "value" : "23.0",
+                                 "type" : "Literal"
+                              },
+                              "high" : {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                                 "value" : "30.0",
+                                 "type" : "Literal"
+                              }
                            } ]
                         } ]
                      },
@@ -780,14 +772,33 @@
                      }
                   }, {
                      "when" : {
-                        "type" : "GreaterOrEqual",
+                        "type" : "And",
                         "operand" : [ {
-                           "name" : "BMI",
-                           "type" : "ExpressionRef"
+                           "type" : "Not",
+                           "operand" : {
+                              "name" : "IsAsian",
+                              "type" : "ExpressionRef"
+                           }
                         }, {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
-                           "value" : "25.0",
-                           "type" : "Literal"
+                           "type" : "In",
+                           "operand" : [ {
+                              "name" : "BMI",
+                              "type" : "ExpressionRef"
+                           }, {
+                              "lowClosed" : true,
+                              "highClosed" : true,
+                              "type" : "Interval",
+                              "low" : {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                                 "value" : "25.0",
+                                 "type" : "Literal"
+                              },
+                              "high" : {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                                 "value" : "30.0",
+                                 "type" : "Literal"
+                              }
+                           } ]
                         } ]
                      },
                      "then" : {
@@ -815,15 +826,56 @@
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "GreaterOrEqual",
-               "operand" : [ {
-                  "name" : "BMI",
-                  "type" : "ExpressionRef"
-               }, {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
-                  "value" : "30.0",
-                  "type" : "Literal"
-               } ]
+               "type" : "If",
+               "condition" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Not",
+                     "operand" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "BMI",
+                           "type" : "ExpressionRef"
+                        }
+                     }
+                  }
+               },
+               "then" : {
+                  "type" : "If",
+                  "condition" : {
+                     "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "GreaterOrEqual",
+                        "operand" : [ {
+                           "name" : "BMI",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                           "value" : "30.0",
+                           "type" : "Literal"
+                        } ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "true",
+                     "type" : "Literal"
+                  },
+                  "else" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "false",
+                     "type" : "Literal"
+                  }
+               },
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
             }
          }, {
             "name" : "ScreeningTrigger",

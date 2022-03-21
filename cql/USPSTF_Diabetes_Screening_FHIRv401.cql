@@ -104,20 +104,23 @@ define ScreeningNeverDone:
 define BMI:
   WeightInKilos/(HeightInMeters^2)
 
-define BMIIsTwentyFiveOrGreater:
-  BMI>=25
+// define BMIIsTwentyFiveOrGreater:
+//   BMI>=25
 
 define IsOverweight:
   if BMI is not null then 
     case
-      when IsAsian and BMI>=23.0 then true
-      when BMI>= 25.0 then true
+      // when IsAsian and BMI>=23.0 then true
+      when IsAsian and BMI in Interval[23.0, 30.0) then true
+      when not IsAsian and BMI in Interval[25.0, 30.0] then true
       else false
     end
   else null
 
 define IsObese: 
-  BMI>=30.0
+  if BMI is not null then 
+    if BMI >= 30.0 then true else false
+  else null
 
 define ScreeningTrigger:
   case 
