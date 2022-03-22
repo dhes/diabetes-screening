@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: overweight
+name: overweight_by_height_and_weight
 data:
   - resourceType: Patient
     extension:
@@ -32,6 +32,15 @@ data:
     effectiveDateTime: '2022-03-13'
     valueQuantity: 201 [lb_av]
 results:
+  BmiObservations: []
+  Height: { value: 178, unit: 'cm' }
+  Weight: {
+        "value": 201,
+        "unit": "[lb_av]"
+      }
+  BmiObservation: null
+  BmiCalc: 28.7754299962126
+  BMI: 28.7754299962126
   NeedMoreInformation: null
   Recommendation: |-
     This patient is overweight. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.

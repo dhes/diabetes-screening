@@ -15,9 +15,17 @@ data:
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
     code: 'LOINC#39156-5 Body mass index (BMI) [Ratio]'
-    valueQuantity: 25 kg/m2
+    valueQuantity: 25.0 kg/m2
     issued: 2019-04-05T00:00:00.000Z
 results:
+  Heights: null
+  Weights: null
+  BmiObservations: null
+  Height: null
+  Weight: null
+  BmiObservation: null
+  BmiCalc: null
+  BMI: 25.0
   NeedMoreInformation: null
   Recommendation: |-
     This patient is overweight. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.
