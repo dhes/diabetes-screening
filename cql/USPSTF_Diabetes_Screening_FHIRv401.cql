@@ -78,6 +78,35 @@ define Height:
 define Weight:
   FHIRHelpers.ToQuantity(C3F.MostRecent(Weights).value)
 
+define BmiObservation:
+  FHIRHelpers.ToQuantity(C3F.MostRecent(BmiObservations).value)
+
+// truth table
+// Use the BMI recorded as an observation if it is more recent than the most recent height and weight observations; else the BMI calculated from height and weight
+// First determine which of these observastions exist and impact on BMI
+// | =================================================== |
+// |                     | Exists? -->                   |
+// | =================== | = | = | = | = | = | = | = | = |
+// |  BMI Observation    | T | T | T | F | F | F | T | F |
+// |  Height Observation | T | T | F | T | F | T | F | F |
+// |  Weight Observation | T | F | T | T | T | F | F | F |
+// | =================== | = | = | = | = | = | = | = | = |
+// |  BMI                | * | O | O | C | N | N | O | N |
+// | =================== | = | = | = | = | = | = | = | = |
+// 
+// N Null
+// O BMIO - BMI Observation
+// C BMIC - calculated from weight and height
+// * BMIO or BMIC, whichever is newer
+
+// determine whether height/weight or BmiObservation are more recent
+  if Exists(Height) and 
+    Exists(Weight) and 
+    Exists(BMIObservation) and
+    Height.effectiveDateTime>BMIObservation.effectiveDateTime and
+    Weight.effectiveDateTime>BMIObservation.effectiveDateTime then BMI
+  else BmiObservation
+
 define HeightInMeters:
   // the only allowed units are [in_i] or cm
   case Height.unit
