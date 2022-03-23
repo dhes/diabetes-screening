@@ -72,14 +72,34 @@ define Gender:
     else null
   end
 
+define MostRecentHeight:
+  C3F.MostRecent(C3F.Verified(Heights))
+
+// Get most recent date whether it is effectiveDateTime, instant, 
+// effectivePeriod.end, effectivePeriod.start or issued 
+define HeightDate:
+  C3F.FindDate(MostRecentHeight)
+
 define Height:
-  C3F.QuantityValue(C3F.MostRecent(C3F.Verified(Heights)))
+  C3F.QuantityValue(MostRecentHeight)
+
+define MostRecentWeight:
+  C3F.MostRecent(C3F.Verified(Weights))
+
+define WeightDate:
+  C3F.FindDate(MostRecentWeight)
 
 define Weight:
-  C3F.QuantityValue(C3F.MostRecent(C3F.Verified(Weights)))
+  C3F.QuantityValue(MostRecentWeight)
+
+define MostRecentBmiObservation:
+  C3F.MostRecent(C3F.Verified(BmiObservations))
+
+define ObservationDate:
+  C3F.FindDate(MostRecentBmiObservation)
 
 define BmiObservation:
-  C3F.QuantityValue(C3F.MostRecent(C3F.Verified(BmiObservations)))
+  C3F.QuantityValue(MostRecentBmiObservation)
 
 define HeightInMeters:
   // the only allowed units are [in_i] or cm

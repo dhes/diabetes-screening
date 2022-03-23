@@ -473,6 +473,37 @@
                }
             }
          }, {
+            "name" : "MostRecentHeight",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Verified",
+                  "libraryName" : "C3F",
+                  "type" : "FunctionRef",
+                  "operand" : [ {
+                     "name" : "Heights",
+                     "type" : "ExpressionRef"
+                  } ]
+               } ]
+            }
+         }, {
+            "name" : "HeightDate",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "FindDate",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "MostRecentHeight",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
             "name" : "Height",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -481,17 +512,25 @@
                "libraryName" : "C3F",
                "type" : "FunctionRef",
                "operand" : [ {
-                  "name" : "MostRecent",
+                  "name" : "MostRecentHeight",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
+            "name" : "MostRecentWeight",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Verified",
                   "libraryName" : "C3F",
                   "type" : "FunctionRef",
                   "operand" : [ {
-                     "name" : "Verified",
-                     "libraryName" : "C3F",
-                     "type" : "FunctionRef",
-                     "operand" : [ {
-                        "name" : "Heights",
-                        "type" : "ExpressionRef"
-                     } ]
+                     "name" : "Weights",
+                     "type" : "ExpressionRef"
                   } ]
                } ]
             }
@@ -504,18 +543,39 @@
                "libraryName" : "C3F",
                "type" : "FunctionRef",
                "operand" : [ {
-                  "name" : "MostRecent",
+                  "name" : "MostRecentWeight",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
+            "name" : "MostRecentBmiObservation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MostRecent",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "Verified",
                   "libraryName" : "C3F",
                   "type" : "FunctionRef",
                   "operand" : [ {
-                     "name" : "Verified",
-                     "libraryName" : "C3F",
-                     "type" : "FunctionRef",
-                     "operand" : [ {
-                        "name" : "Weights",
-                        "type" : "ExpressionRef"
-                     } ]
+                     "name" : "BmiObservations",
+                     "type" : "ExpressionRef"
                   } ]
+               } ]
+            }
+         }, {
+            "name" : "ObservationDate",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "FindDate",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "MostRecentBmiObservation",
+                  "type" : "ExpressionRef"
                } ]
             }
          }, {
@@ -527,18 +587,8 @@
                "libraryName" : "C3F",
                "type" : "FunctionRef",
                "operand" : [ {
-                  "name" : "MostRecent",
-                  "libraryName" : "C3F",
-                  "type" : "FunctionRef",
-                  "operand" : [ {
-                     "name" : "Verified",
-                     "libraryName" : "C3F",
-                     "type" : "FunctionRef",
-                     "operand" : [ {
-                        "name" : "BmiObservations",
-                        "type" : "ExpressionRef"
-                     } ]
-                  } ]
+                  "name" : "MostRecentBmiObservation",
+                  "type" : "ExpressionRef"
                } ]
             }
          }, {
