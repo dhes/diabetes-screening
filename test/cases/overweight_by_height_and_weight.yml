@@ -33,11 +33,12 @@ data:
     valueQuantity: 201 [lb_av]
 results:
   BmiObservations: []
-  Height: { value: 178, unit: 'cm' }
-  Weight: {
-        "value": 201,
-        "unit": "[lb_av]"
-      }
+  Height: 
+    value: 178
+    unit: cm
+  Weight: 
+    value: 201
+    unit: '[lb_av]'
   BmiObservation: null
   BmiCalc: 28.7754299962126
   BMI: 28.7754299962126

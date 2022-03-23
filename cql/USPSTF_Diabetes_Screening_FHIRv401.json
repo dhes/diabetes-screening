@@ -706,24 +706,74 @@
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Divide",
-               "operand" : [ {
-                  "name" : "WeightInKilos",
-                  "type" : "ExpressionRef"
-               }, {
-                  "type" : "Power",
-                  "operand" : [ {
-                     "name" : "HeightInMeters",
-                     "type" : "ExpressionRef"
+               "type" : "If",
+               "condition" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "IsNull",
+                           "operand" : {
+                              "name" : "WeightInKilos",
+                              "type" : "ExpressionRef"
+                           }
+                        }
+                     }, {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "IsNull",
+                           "operand" : {
+                              "name" : "HeightInMeters",
+                              "type" : "ExpressionRef"
+                           }
+                        }
+                     } ]
+                  }
+               },
+               "then" : {
+                  "classType" : "{urn:hl7-org:elm-types:r1}Quantity",
+                  "type" : "Instance",
+                  "element" : [ {
+                     "name" : "value",
+                     "value" : {
+                        "type" : "Divide",
+                        "operand" : [ {
+                           "name" : "WeightInKilos",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "type" : "Power",
+                           "operand" : [ {
+                              "name" : "HeightInMeters",
+                              "type" : "ExpressionRef"
+                           }, {
+                              "type" : "ToDecimal",
+                              "operand" : {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "2",
+                                 "type" : "Literal"
+                              }
+                           } ]
+                        } ]
+                     }
                   }, {
-                     "type" : "ToDecimal",
-                     "operand" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "2",
+                     "name" : "unit",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "kg/m2",
                         "type" : "Literal"
                      }
                   } ]
-               } ]
+               },
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}Quantity",
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  }
+               }
             }
          }, {
             "name" : "BMI",
@@ -860,11 +910,8 @@
                      } ]
                   },
                   "then" : {
-                     "type" : "ToQuantity",
-                     "operand" : {
-                        "name" : "BmiCalc",
-                        "type" : "ExpressionRef"
-                     }
+                     "name" : "BmiCalc",
+                     "type" : "ExpressionRef"
                   }
                }, {
                   "when" : {
@@ -1139,12 +1186,9 @@
                            "name" : "BMI",
                            "type" : "ExpressionRef"
                         }, {
-                           "type" : "ToQuantity",
-                           "operand" : {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
-                              "value" : "30.0",
-                              "type" : "Literal"
-                           }
+                           "value" : 30.0,
+                           "unit" : "kg/m2",
+                           "type" : "Quantity"
                         } ]
                      }
                   },
@@ -1609,8 +1653,14 @@
                               }, {
                                  "type" : "IsTrue",
                                  "operand" : {
-                                    "name" : "IsOverweight",
-                                    "type" : "ExpressionRef"
+                                    "type" : "Or",
+                                    "operand" : [ {
+                                       "name" : "IsOverweight",
+                                       "type" : "ExpressionRef"
+                                    }, {
+                                       "name" : "IsObese",
+                                       "type" : "ExpressionRef"
+                                    } ]
                                  }
                               } ]
                            }, {

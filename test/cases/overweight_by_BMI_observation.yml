@@ -18,14 +18,18 @@ data:
     valueQuantity: 25.0 kg/m2
     issued: 2019-04-05T00:00:00.000Z
 results:
-  Heights: null
-  Weights: null
-  BmiObservations: null
+  Heights: []
+  Weights: []
+  BmiObservations: $should exist
   Height: null
   Weight: null
-  BmiObservation: null
-  BmiCalc: null
-  BMI: 25.0
+  BmiObservation: 
+    value: 25
+    unit: 'kg/m2'
+  BmiCalc: 25.0
+  BMI: 
+    value: 25.0
+    unit: 'kg/m2'
   NeedMoreInformation: null
   Recommendation: |-
     This patient is overweight. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.

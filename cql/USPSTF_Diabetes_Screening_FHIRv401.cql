@@ -100,7 +100,12 @@ define WeightInKilos:
   end
 
 define BmiCalc:
-  (WeightInKilos/(HeightInMeters^2)) 'kg/m2'
+  if WeightInKilos is not null and HeightInMeters is not null then 
+    System.Quantity  {
+      value: WeightInKilos/(HeightInMeters^2), 
+      unit: 'kg/m2'
+    }
+  else null
 
 // truth table
 // Use the BMI recorded as an observation if it is more recent than the most recent height and weight observations; else the BMI calculated from height and weight
@@ -139,7 +144,7 @@ define BmiCalc:
 // C BmiCalc - calculated from weight and height
 // * BMIO or BmiCalc, whichever is newer
 
-// compare this to the table above. T='exists' F='not exists'. else=FFF is the only remaining case. 
+// Truth table in code form. T='exists' F='not exists'. else=FFF=N is the only remaining case. 
 define BMI:
   case 
     when     exists (BmiObservations) and     exists (Weights) and     exists (Heights) then null //for now
@@ -172,7 +177,7 @@ define IsOverweight:
 
 define IsObese: 
   if BMI is not null then 
-    if BMI >= 30.0 then true else false
+    if BMI >= 30.0 'kg/m2' then true else false
   else null
 
 define ScreeningTrigger:
@@ -229,7 +234,7 @@ define NeedMoreInformation:
 
 define Recommendation: 
   if InAgeRange is true and 
-    IsOverweight is true and 
+    (IsOverweight or IsObese) is true and 
     NeedMoreInformation is null and
     ScreenedWithinThreeYears is null and
     IsExcluded is false 
