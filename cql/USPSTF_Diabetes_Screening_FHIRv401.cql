@@ -77,8 +77,8 @@ define MostRecentHeight:
 
 // Get most recent date whether it is effectiveDateTime, instant, 
 // effectivePeriod.end, effectivePeriod.start or issued 
-define HeightDate:
-  C3F.FindDate(MostRecentHeight)
+// define HeightDate:
+//   C3F.FindDate(MostRecentHeight)
 
 define Height:
   C3F.QuantityValue(MostRecentHeight)
@@ -95,7 +95,7 @@ define Weight:
 define MostRecentBmiObservation:
   C3F.MostRecent(C3F.Verified(BmiObservations))
 
-define ObservationDate:
+define BmiDate:
   C3F.FindDate(MostRecentBmiObservation)
 
 define BmiObservation:
@@ -163,11 +163,13 @@ define BmiCalc:
 // O BMIO - BMI Observation
 // C BmiCalc - calculated from weight and height
 // * BMIO or BmiCalc, whichever is newer
+// Weight and height might have different dates. 
+// Since height is relatively static, use the date of the weight to determine whether BmiObservation or BmiCalc is newer. 
 
-// Truth table in code form. T='exists' F='not exists'. else=FFF=N is the only remaining case. 
+// Truth table in code form. T='exists' F='not exists'. The all-false case is covered by the last 'else null'
 define BMI:
   case 
-    when     exists (BmiObservations) and     exists (Weights) and     exists (Heights) then null //for now
+    when     exists (BmiObservations) and     exists (Weights) and     exists (Heights) then if WeightDate > BmiDate then BmiCalc else BmiObservation
     when     exists (BmiObservations) and     exists (Weights) and not exists (Heights) then BmiObservation
     when     exists (BmiObservations) and not exists (Weights) and     exists (Heights) then BmiObservation
     when not exists (BmiObservations) and     exists (Weights) and     exists (Heights) then BmiCalc
@@ -245,10 +247,12 @@ define NeedMoreInformation:
       '- date of birth'
     else
       if InAgeRange is true then
-        Combine(List{
-          if Height is null then '- height' else null,
-          if Weight is null then '- weight' else null
-        }, '\n')
+        // Saving this in case: 
+        // Combine(List{
+        //   if Height is null then '- height' else null,
+        //   if Weight is null then '- weight' else null
+        // }, '\n')
+        if (Height is null or Weight is null) and BmiObservation is null then 'Need height and weight or BMI' else null
       else null
   else null
 

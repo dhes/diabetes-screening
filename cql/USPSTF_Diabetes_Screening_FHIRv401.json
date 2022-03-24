@@ -491,19 +491,6 @@
                } ]
             }
          }, {
-            "name" : "HeightDate",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "name" : "FindDate",
-               "libraryName" : "C3F",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "name" : "MostRecentHeight",
-                  "type" : "ExpressionRef"
-               } ]
-            }
-         }, {
             "name" : "Height",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -532,6 +519,19 @@
                      "name" : "Weights",
                      "type" : "ExpressionRef"
                   } ]
+               } ]
+            }
+         }, {
+            "name" : "WeightDate",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "FindDate",
+               "libraryName" : "C3F",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "name" : "MostRecentWeight",
+                  "type" : "ExpressionRef"
                } ]
             }
          }, {
@@ -566,7 +566,7 @@
                } ]
             }
          }, {
-            "name" : "ObservationDate",
+            "name" : "BmiDate",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -858,10 +858,28 @@
                      } ]
                   },
                   "then" : {
-                     "asType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "Null"
+                     "type" : "If",
+                     "condition" : {
+                        "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Greater",
+                           "operand" : [ {
+                              "name" : "WeightDate",
+                              "type" : "ExpressionRef"
+                           }, {
+                              "name" : "BmiDate",
+                              "type" : "ExpressionRef"
+                           } ]
+                        }
+                     },
+                     "then" : {
+                        "name" : "BmiCalc",
+                        "type" : "ExpressionRef"
+                     },
+                     "else" : {
+                        "name" : "BmiObservation",
+                        "type" : "ExpressionRef"
                      }
                   }
                }, {
@@ -1599,65 +1617,47 @@
                         }
                      },
                      "then" : {
-                        "type" : "Combine",
-                        "source" : {
-                           "type" : "List",
-                           "element" : [ {
-                              "type" : "If",
-                              "condition" : {
-                                 "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
-                                 "type" : "As",
-                                 "operand" : {
+                        "type" : "If",
+                        "condition" : {
+                           "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                           "type" : "As",
+                           "operand" : {
+                              "type" : "And",
+                              "operand" : [ {
+                                 "type" : "Or",
+                                 "operand" : [ {
                                     "type" : "IsNull",
                                     "operand" : {
                                        "name" : "Height",
                                        "type" : "ExpressionRef"
                                     }
-                                 }
-                              },
-                              "then" : {
-                                 "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "value" : "- height",
-                                 "type" : "Literal"
-                              },
-                              "else" : {
-                                 "asType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "type" : "As",
-                                 "operand" : {
-                                    "type" : "Null"
-                                 }
-                              }
-                           }, {
-                              "type" : "If",
-                              "condition" : {
-                                 "asType" : "{urn:hl7-org:elm-types:r1}Boolean",
-                                 "type" : "As",
-                                 "operand" : {
+                                 }, {
                                     "type" : "IsNull",
                                     "operand" : {
                                        "name" : "Weight",
                                        "type" : "ExpressionRef"
                                     }
-                                 }
-                              },
-                              "then" : {
-                                 "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "value" : "- weight",
-                                 "type" : "Literal"
-                              },
-                              "else" : {
-                                 "asType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "type" : "As",
+                                 } ]
+                              }, {
+                                 "type" : "IsNull",
                                  "operand" : {
-                                    "type" : "Null"
+                                    "name" : "BmiObservation",
+                                    "type" : "ExpressionRef"
                                  }
-                              }
-                           } ]
+                              } ]
+                           }
                         },
-                        "separator" : {
+                        "then" : {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "\n",
+                           "value" : "Need height and weight or BMI",
                            "type" : "Literal"
+                        },
+                        "else" : {
+                           "asType" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "As",
+                           "operand" : {
+                              "type" : "Null"
+                           }
                         }
                      },
                      "else" : {

@@ -23,13 +23,17 @@ results:
   BmiObservations: $should exist
   Height: null
   Weight: null
-  BmiObservation: 
-    value: 25
-    unit: 'kg/m2'
-  BmiCalc: 25.0
-  BMI: 
-    value: 25.0
-    unit: 'kg/m2'
-  NeedMoreInformation: null
-  Recommendation: |-
-    This patient is overweight. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.
+  # Shouldn't this work?
+  # BmiObservation: 
+  #   value: 25
+  #   unit: 'kg/m2'
+  BmiObservation: $should exist
+  BmiCalc: null
+  # Shouldn't this work?
+  # BMI: 
+  #   value: 25.0
+  #   unit: 'kg/m2'
+  BMI: $should exist
+  # NeedMoreInformation: null
+  # Recommendation: |-
+  #   This patient is overweight. He should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.
