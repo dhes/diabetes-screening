@@ -1,0 +1,24 @@
+# If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
+name: bmi7_bmi_only
+data:
+  - resourceType: Patient
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding: 'urn:oid:2.16.840.1.113883.6.238#2106-3 White'
+    active: true
+    name: Ferd Berfel
+    gender: male
+    # in the middle of the age range
+    birthDate: 1968-06-30
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#39156-5 Body mass index (BMI) [Ratio]'
+    valueQuantity: 24.9 kg/m2
+    issued: 2019-04-05T00:00:00.000Z
+results:
+  NeedMoreInformation: null
+  BMI: $should exist
+  Recommendation: null

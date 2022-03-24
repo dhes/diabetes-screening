@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: bmi6_weight_newer_than_bmi
+name: bmi4_weight_and_height
 data:
   - resourceType: Patient
     extension:
@@ -15,24 +15,17 @@ data:
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
-    # code: 'LOINC#8302-2 Body height'
-    code: 'SNOMEDCT#50373000 Body height measure'
-    effectiveDateTime: '2021-03-13'
-    valueQuantity: 70 [in_i]
-  - resourceType: Observation
-    status: final
-    category: 'OBS-CAT#vital-signs Vital Signs'
     code: 'LOINC#3141-9 Body weight'
     effectiveDateTime: '2022-03-13'
     valueQuantity: 160 [lb_av]
   - resourceType: Observation
     status: final
     category: 'OBS-CAT#vital-signs Vital Signs'
-    code: 'LOINC#39156-5 Body mass index (BMI) [Ratio]'
-    valueQuantity: 24.9 kg/m2
-    issued: 2019-04-05T00:00:00.000Z
+    # code: 'LOINC#8302-2 Body height'
+    code: 'SNOMEDCT#50373000 Body height measure'
+    effectiveDateTime: '2021-03-13'
+    valueQuantity: 70 [in_i]
 results:
   NeedMoreInformation: null
-  BmiEqualsBmiCalc: true
-  BmiEqualsBmiObs: false
+  BMI: $should exist
   Recommendation: null

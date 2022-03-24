@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: bmi1_no_weight_height_or_bmi
+name: bmi8_no_weight_height_or_bmi
 data:
   - resourceType: Patient
     extension:
