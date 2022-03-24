@@ -179,13 +179,15 @@ define BMI:
     else                                                                                     null
   end
     
-define ScreeningNeverDone:
-  // never had HbA1c measure since turning 35
-  // or GTT or fasting glucose
-  null
-
-// define BMIIsTwentyFiveOrGreater:
-//   BMI>=25
+// values for testing BMI logic only
+//  |
+// \ /
+define BmiEqualsBmiCalc:
+  BMI.value=BmiCalc.value
+define BmiEqualsBmiObs:
+  BMI.value=BmiObservation.value
+// / \
+//  |
 
 define IsOverweight:
   if BMI is not null then 

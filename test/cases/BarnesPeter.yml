@@ -120,12 +120,6 @@ data:
     code: 'SNOMEDCT#50373000 Body height measure'
     effectiveDateTime: '2022-03-13'
     valueQuantity: 69.75 [in_i]
-  - resourceType: Observation
-    status: final
-    category: 'OBS-CAT#vital-signs Vital Signs'
-    code: 'LOINC#39156-5 Body mass index'
-    effectiveDateTime: '2022-03-13'
-    valueQuantity: 25 kg/m2
 results:
   NeedMoreInformation: null
   Recommendation: null

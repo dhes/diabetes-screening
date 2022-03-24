@@ -1,5 +1,5 @@
 # If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
-name: no_weight_or_height
+name: bmi4_bmi_only
 data:
   - resourceType: Patient
     extension:
@@ -12,8 +12,13 @@ data:
     gender: male
     # in the middle of the age range
     birthDate: 1968-06-30
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    code: 'LOINC#39156-5 Body mass index (BMI) [Ratio]'
+    valueQuantity: 24.9 kg/m2
+    issued: 2019-04-05T00:00:00.000Z
 results:
-  NeedMoreInformation: |-
-    - height
-    - weight
+  NeedMoreInformation: null
+  BMI: $should exist
   Recommendation: null

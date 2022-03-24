@@ -1105,11 +1105,48 @@
                }
             }
          }, {
-            "name" : "ScreeningNeverDone",
+            "name" : "BmiEqualsBmiCalc",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Null"
+               "type" : "Equal",
+               "operand" : [ {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "BMI",
+                     "type" : "ExpressionRef"
+                  }
+               }, {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "BmiCalc",
+                     "type" : "ExpressionRef"
+                  }
+               } ]
+            }
+         }, {
+            "name" : "BmiEqualsBmiObs",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Equal",
+               "operand" : [ {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "BMI",
+                     "type" : "ExpressionRef"
+                  }
+               }, {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "BmiObservation",
+                     "type" : "ExpressionRef"
+                  }
+               } ]
             }
          }, {
             "name" : "IsOverweight",

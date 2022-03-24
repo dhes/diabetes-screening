@@ -1,0 +1,26 @@
+# If you want to test peter barnes, comment out date: 2021-12-31 in cqlt.yaml 
+name: bmi2_height_only
+data:
+  - resourceType: Patient
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding: 'urn:oid:2.16.840.1.113883.6.238#2106-3 White'
+    active: true
+    name: Ferd Berfel
+    gender: male
+    # in the middle of the age range
+    birthDate: 1968-06-30
+  - resourceType: Observation
+    status: final
+    category: 'OBS-CAT#vital-signs Vital Signs'
+    # code: 'LOINC#8302-2 Body height'
+    code: 'SNOMEDCT#50373000 Body height measure'
+    effectiveDateTime: '2021-03-13'
+    valueQuantity: 70 [in_i]
+results:
+  NeedMoreInformation: |-
+    Need height and weight or BMI
+  BMI: null
+  Recommendation: null
