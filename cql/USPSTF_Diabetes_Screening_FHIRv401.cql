@@ -231,7 +231,7 @@ define HasPrediabetes: // which includes IGG and IFG
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
 
 // 3 years is the interval suggested by the guideline. 
-// Including this interval is a design decision.  
+// Including this interval in the cql is a design decision.  
 // If you are following a strictly literal interpretation of the USPSTF guideline 
 // you could use a different interval or no interval. 
 // "Prediabetes and type 2 diabetes can be detected by measuring fasting plasma glucose or HbA1c level, or with an oral glucose tolerance test. "
