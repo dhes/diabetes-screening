@@ -27,6 +27,6 @@ data:
     issued: 2019-04-05T00:00:00.000Z
 results:
   NeedMoreInformation: null
-  BmiEqualsBmiCalc: false
+  BmiEqualsBmiCalc: null
   BmiEqualsBmiObs: true
   Recommendation: null

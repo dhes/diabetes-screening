@@ -35,9 +35,9 @@ data:
     category: 'OBS-CAT#laboratory Laboratory'
     status: final
     code: 'LOINC#1518-0 Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO'
-    valueQuantity: 5.7 %
-# two years ago hawaii time
-    effectiveDateTime: 2019-12-31T00:00:00-10:00
+    valueQuantity: 190 mg/dl
+# three years ago hawaii time
+    effectiveDateTime: 2018-12-31T00:00:00-10:00
 results:
   NeedMoreInformation: null
   Recommendation: null

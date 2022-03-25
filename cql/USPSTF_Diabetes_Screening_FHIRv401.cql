@@ -51,6 +51,7 @@ define RaceCodes:
 
 define IsAsian: if exists (RaceCodes) then exists (RaceCodes RC where RC ~ "Asian") else null
 
+// "The USPSTF recommends screening for prediabetes and type 2 diabetes in adults aged 35 to 70 years..."
 define InAgeRange: 
   if Patient.birthDate is not null then 
     AgeInYears() >= 35 and AgeInYears() < 71 
@@ -80,6 +81,7 @@ define MostRecentHeight:
 // define HeightDate:
 //   C3F.FindDate(MostRecentHeight)
 
+// "...who have overweight or obesity"
 define Height:
   C3F.QuantityValue(MostRecentHeight)
 
@@ -193,6 +195,7 @@ define IsOverweight:
   if BMI is not null then 
     case
       // when IsAsian and BMI>=23.0 then true
+      // "Data suggest that a BMI of 23 or greater may be an appropriate cut point in Asian American persons."
       when IsAsian and BMI>=23.0 'kg/m2' and BMI<30.0 'kg/m2' then true
       when not IsAsian and BMI>=25.0 'kg/m2' and BMI<30.0 'kg/m2' then true
       else false
@@ -227,10 +230,12 @@ define HasDiabetes:
 define HasPrediabetes: // which includes IGG and IFG
   Exists(C3F.Confirmed(C3F.ActiveCondition([Condition: "Prediabetes"])))
 
-// 3 years is the interval suggested by the guideline
-// Including this interval is a design decision 
+// 3 years is the interval suggested by the guideline. 
+// Including this interval is a design decision.  
 // If you are following a strictly literal interpretation of the USPSTF guideline 
-// it would be reasonalbe to use a different interval or no interval. 
+// you could use a different interval or no interval. 
+// "Prediabetes and type 2 diabetes can be detected by measuring fasting plasma glucose or HbA1c level, or with an oral glucose tolerance test. "
+// "Cohort and modeling studies suggest that screening every 3 years may be a reasonable approach for adults with normal blood glucose levels."
 define ScreenedWithinThreeYears:
   C3F.MostRecent(C3F.Verified(C3F.ObservationLookBack(
     [Observation: "HemoglobinA1cTest"] union
@@ -264,7 +269,7 @@ define Recommendation:
     NeedMoreInformation is null and
     ScreenedWithinThreeYears is null and
     IsExcluded is false 
-    // then '- order HbA1c'
+    // "Prediabetes and type 2 diabetes can be detected by measuring fasting plasma glucose or HbA1c level, or with an oral glucose tolerance test. "
     then 'This patient is ' + ScreeningTrigger + '. ' + Gender + 
       ' should be screened for diabetes with a HbA1c, glucose tolerance test or fasting blood sugar.'
   else null
